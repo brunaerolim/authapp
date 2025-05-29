@@ -18,12 +18,12 @@ This is an **ongoing implementation**. Core features are being developed and tes
 ## 📱 Screenshots
 
 ### 🆕 Create Account Screen
-<img src="https://raw.githubusercontent.com/your-username/your-repo/main/ca.png" alt="Create Account" width="300"/>
+<img src="app/src/main/java/com/example/authapp/utils/assets/createaccount.png" alt="Create Account" width="300"/>
 
 ---
 
 ### 🔐 Sign In Screen
-<img src="https://raw.githubusercontent.com/your-username/your-repo/main/Screenshot_20250529_182117.png" alt="Sign In" width="300"/>
+<img src="app/src/main/java/com/example/authapp/utils/assets/signin.png" alt="Sign In" width="300"/>
 
 ---
 
