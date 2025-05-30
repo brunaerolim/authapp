@@ -158,7 +158,7 @@ class AuthRepositoryImpl @Inject constructor(
         return try {
             val result = auth.createUserWithEmailAndPassword(email, password).await()
 
-            // Atualizar o perfil do usuário com o nome
+            // Update the user's profile with the name
             result.user?.updateProfile(
                 UserProfileChangeRequest.Builder()
                     .setDisplayName(name)
@@ -175,7 +175,7 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    // CORRIGIDO: Implementação do signInWithGoogle que retorna Resource<User>
+    // FIXED: Implementation of signInWithGoogle that returns Resource<User>
     override suspend fun signInWithGoogle(credential: AuthCredential): Resource<User> {
         return try {
             val result = auth.signInWithCredential(credential).await()
