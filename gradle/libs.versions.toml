@@ -15,6 +15,10 @@ playServicesAuth = "20.7.0"
 navigationCompose = "2.7.6"
 coroutines = "1.7.3"
 coil = "2.5.0"
+mockito = "5.1.1"
+mockitoKotlin = "4.1.0"
+turbine = "1.0.0"
+archCore = "2.2.0"
 
 [libraries]
 # Android Core
@@ -53,6 +57,10 @@ kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "ko
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+arch-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "archCore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

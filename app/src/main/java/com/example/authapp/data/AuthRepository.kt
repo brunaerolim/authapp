@@ -58,8 +58,11 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun checkIfUserExists(email: String): Boolean {
         return try {
-            val methods = auth.fetchSignInMethodsForEmail(email).await()
-            methods.signInMethods?.isNotEmpty() == true
+            auth.createUserWithEmailAndPassword(email, "temp_password_check_123").await()
+            auth.currentUser?.delete()?.await()
+            false
+        } catch (e: FirebaseAuthUserCollisionException) {
+            true
         } catch (e: Exception) {
             false
         }
@@ -67,8 +70,8 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun checkUserExists(email: String): Resource<Boolean> {
         return try {
-            val methods = auth.fetchSignInMethodsForEmail(email).await()
-            Resource.Success(methods.signInMethods?.isNotEmpty() == true)
+            val exists = checkIfUserExists(email)
+            Resource.Success(exists)
         } catch (e: Exception) {
             Resource.Failure(e)
         }
@@ -83,10 +86,6 @@ class AuthRepositoryImpl @Inject constructor(
         password: String
     ): Resource<User> {
         return try {
-            if (!checkIfUserExists(email)) {
-                return Resource.Failure(Exception("No account found with this email. Please create an account first."))
-            }
-
             val result = auth.signInWithEmailAndPassword(email, password).await()
             val user = result.user?.toUser()
 
@@ -106,10 +105,6 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun signIn(email: String, password: String): Resource<AuthResult> {
         return try {
-            if (!checkIfUserExists(email)) {
-                return Resource.Failure(Exception("No account found with this email. Please create an account first."))
-            }
-
             val result = auth.signInWithEmailAndPassword(email, password).await()
             Resource.Success(result)
         } catch (e: FirebaseAuthInvalidUserException) {
@@ -158,7 +153,6 @@ class AuthRepositoryImpl @Inject constructor(
         return try {
             val result = auth.createUserWithEmailAndPassword(email, password).await()
 
-            // Update the user's profile with the name
             result.user?.updateProfile(
                 UserProfileChangeRequest.Builder()
                     .setDisplayName(name)
@@ -175,7 +169,6 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    // FIXED: Implementation of signInWithGoogle that returns Resource<User>
     override suspend fun signInWithGoogle(credential: AuthCredential): Resource<User> {
         return try {
             val result = auth.signInWithCredential(credential).await()
