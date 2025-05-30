@@ -12,7 +12,7 @@ clean architecture principles.
 - **MVVM Architecture** – clean separation of concerns
 - **Hilt** – for dependency injection
 - **Firebase Authentication** (coming soon)
-- **Google Sign-In** (in progress)
+- **Google Sign-In**
 
 ## 🚧 Project Status
 
