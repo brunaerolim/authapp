@@ -124,7 +124,7 @@ fun SignInContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Ícone decorativo
+            // Decorative icon
             Box(
                 modifier = Modifier
                     .size(80.dp)
