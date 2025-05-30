@@ -7,7 +7,8 @@ import com.example.authapp.ui.screen.signin.SignInScreenState
 
 @Composable
 fun SignInViewModel.toFormState(
-    onGoogleSignIn: () -> Unit
+    onGoogleSignIn: () -> Unit,
+    onGoogleSignInRequest: () -> Unit
 ): SignInFormState {
     return SignInFormState(
         email = email.collectAsState(),
@@ -19,7 +20,7 @@ fun SignInViewModel.toFormState(
         onPasswordChanged = ::updatePassword,
         onPasswordFocusLost = ::validatePassword,
         onSignIn = ::signIn,
-        onGoogleSignIn = onGoogleSignIn,
+        onGoogleSignIn = onGoogleSignInRequest,
         errorMessage = errorToastMessage.collectAsState(),
         onDismissError = ::dismissErrorMessage,
         isSignInEnabled = isSignInEnabled.collectAsState()
@@ -28,14 +29,17 @@ fun SignInViewModel.toFormState(
 
 @Composable
 fun SignInViewModel.toScreenState(
-    onNavigateToSignIn: () -> Unit,
     onNavigateToSignUp: () -> Unit,
     onGoogleSignIn: () -> Unit
 ): SignInScreenState {
 
     return SignInScreenState(
-        formState = toFormState(onGoogleSignIn),
+        formState = toFormState(
+            onGoogleSignIn = onGoogleSignIn,
+            onGoogleSignInRequest = ::requestGoogleSignIn
+        ),
         isLoading = showLoading.collectAsState(),
-        onNavigateToSignUp = onNavigateToSignUp
+        onNavigateToSignUp = onNavigateToSignUp,
+        onGoogleSignInResult = ::signInWithGoogle
     )
 }

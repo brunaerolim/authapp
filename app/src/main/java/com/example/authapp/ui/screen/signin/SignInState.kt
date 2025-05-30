@@ -1,6 +1,7 @@
 package com.example.authapp.ui.screen.signin
 
 import androidx.compose.runtime.State
+import com.google.firebase.auth.AuthCredential
 
 data class SignInFormState(
     val email: State<String>,
@@ -21,5 +22,6 @@ data class SignInFormState(
 data class SignInScreenState(
     val formState: SignInFormState,
     val isLoading: State<Boolean>,
-    val onNavigateToSignUp: () -> Unit
+    val onNavigateToSignUp: () -> Unit,
+    val onGoogleSignInResult: (AuthCredential) -> Unit
 )

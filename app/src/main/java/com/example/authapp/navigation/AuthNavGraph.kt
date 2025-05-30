@@ -1,6 +1,7 @@
 package com.example.authapp.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,40 +22,56 @@ fun AuthNavGraph() {
         navController = navController,
         startDestination = Destinations.SignIn.route
     ) {
-
-
         composable(Destinations.SignIn.route) {
             val viewModel: SignInViewModel = hiltViewModel()
+
+            // Observa eventos de sucesso de login
+            LaunchedEffect(Unit) {
+                viewModel.signInSuccess.collect {
+                    navController.navigate(Destinations.Home.route) {
+                        popUpTo(Destinations.SignIn.route) { inclusive = true }
+                    }
+                }
+            }
+
             SignInScreen(
                 state = viewModel.toScreenState(
                     onNavigateToSignUp = {
                         navController.navigate(Destinations.SignUp.route)
                     },
-                    onGoogleSignIn = {
-                        navController.navigate(Destinations.Home.route)
-                    },
-                    onNavigateToSignIn = {
-                        navController.navigate(Destinations.Home.route)
-                    }
+                    onGoogleSignIn = {},
                 )
             )
         }
+
         composable(Destinations.SignUp.route) {
             val viewModel: SignUpViewModel = hiltViewModel()
+
+            LaunchedEffect(Unit) {
+                viewModel.signUpSuccess.collect {
+                    navController.navigate(Destinations.Home.route) {
+                        popUpTo(Destinations.SignUp.route) { inclusive = true }
+                    }
+                }
+            }
+
             SignUpScreen(
                 state = viewModel.toScreenState(
                     onNavigateToSignIn = {
-                        navController.navigate(Destinations.SignIn.route)
+                        navController.popBackStack()
                     }
                 )
             )
         }
+
         composable(Destinations.Home.route) {
             val viewModel: HomeViewModel = hiltViewModel()
             HomeScreen(
                 state = viewModel.toScreenState(
                     onNavigateToSignIn = {
-                        navController.navigate(Destinations.SignIn.route)
+                        navController.navigate(Destinations.SignIn.route) {
+                            popUpTo(0) { inclusive = true }
+                        }
                     }
                 )
             )

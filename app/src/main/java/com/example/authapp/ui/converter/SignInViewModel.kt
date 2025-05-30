@@ -71,6 +71,9 @@ class SignInViewModel @Inject constructor(
     private val _signInSuccess = MutableSharedFlow<Unit>()
     val signInSuccess: SharedFlow<Unit> = _signInSuccess.asSharedFlow()
 
+    private val _googleSignInRequest = MutableSharedFlow<Unit>()
+    val googleSignInRequest: SharedFlow<Unit> = _googleSignInRequest.asSharedFlow()
+
     fun updateEmail(newEmail: String) {
         _email.value = newEmail
         _emailTouched.value = true
@@ -128,59 +131,31 @@ class SignInViewModel @Inject constructor(
     }
 
     fun signIn() {
+        if (!isSignInEnabled.value) return
+
         viewModelScope.launch {
-            validateEmail()
-            validatePassword()
-
-            val trimmedEmail = _email.value.trim()
-            val trimmedPassword = _password.value.trim()
-
-            if (trimmedEmail.isEmpty()) {
-                _errorToastMessage.value = "Please insert your email"
-                return@launch
-            }
-
-            if (trimmedPassword.isEmpty()) {
-                _errorToastMessage.value = "Please insert your password"
-                return@launch
-            }
-
-            if (!isValidEmail(trimmedEmail)) {
-                _errorToastMessage.value = "Please insert a valid email"
-                return@launch
-            }
-
-            if (!isValidPassword(trimmedPassword)) {
-                _errorToastMessage.value = "Password must be at least 6 characters"
-                return@launch
-            }
-
             _showLoading.value = true
 
-            try {
-                val result = authRepository.signInWithEmailAndPassword(
-                    trimmedEmail,
-                    trimmedPassword
-                )
-
-                when (result) {
-                    is Resource.Success -> {
-                        _signInSuccess.emit(Unit)
-                    }
-
-                    is Resource.Failure -> {
-                        _errorToastMessage.value = result.exception.message
-                            ?: "Login failed, please try again."
-                    }
-
-                    is Resource.Loading -> {
-                    }
+            when (val result = authRepository.signIn(_email.value.trim(), _password.value.trim())) {
+                is Resource.Success -> {
+                    _signInSuccess.emit(Unit)
                 }
-            } catch (e: Exception) {
-                _errorToastMessage.value = "Unexpected error occurred."
-            } finally {
-                _showLoading.value = false
+
+                is Resource.Failure -> {
+                    _errorToastMessage.value = result.exception.message ?: "Sign in failed"
+                }
+
+                is Resource.Loading -> { /* handled by showLoading */
+                }
             }
+
+            _showLoading.value = false
+        }
+    }
+
+    fun requestGoogleSignIn() {
+        viewModelScope.launch {
+            _googleSignInRequest.emit(Unit)
         }
     }
 
@@ -188,28 +163,20 @@ class SignInViewModel @Inject constructor(
         viewModelScope.launch {
             _showLoading.value = true
 
-            try {
-                val result = authRepository.signInWithGoogle(credential)
-
-                when (result) {
-                    is Resource.Success -> {
-                        _signInSuccess.emit(Unit)
-                    }
-
-                    is Resource.Failure -> {
-                        _errorToastMessage.value = result.exception.message
-                            ?: "Login failed, please try again."
-                    }
-
-                    is Resource.Loading -> {
-                        // Loading state already handled
-                    }
+            when (val result = authRepository.signInWithGoogle(credential)) {
+                is Resource.Success -> {
+                    _signInSuccess.emit(Unit)
                 }
-            } catch (e: Exception) {
-                _errorToastMessage.value = "Unexpected error occurred."
-            } finally {
-                _showLoading.value = false
+
+                is Resource.Failure -> {
+                    _errorToastMessage.value = result.exception.message ?: "Google sign in failed"
+                }
+
+                is Resource.Loading -> { /* handled by showLoading */
+                }
             }
+
+            _showLoading.value = false
         }
     }
 
