@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.authapp.navigation.AuthNavGraph
-import com.example.authapp.ui.theme.AuthAppTheme
+import com.example.authapp.core.navigation.AuthNavGraph
+import com.example.authapp.presentation.theme.AuthAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

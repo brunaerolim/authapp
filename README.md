@@ -23,13 +23,14 @@ screenshots showing the current UI state of the app.
 
 ### 🆕 Create Account Screen
 
-<img src="app/src/main/java/com/example/authapp/utils/assets/createpinkaccount.png" alt="Create Account" width="300"/>
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/ca.png" alt="Create Account" width="300"/>
 
 ---
 
 ### 🔐 Sign In Screen
 
-<img src="app/src/main/java/com/example/authapp/utils/assets/error.png" alt="Sign In" width="300"/>
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/signin.png" alt="Sign In" width="300"/>
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png" alt="Sign In" width="300"/>
 
 ---
 

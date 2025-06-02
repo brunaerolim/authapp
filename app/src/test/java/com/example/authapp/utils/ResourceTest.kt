@@ -1,8 +1,9 @@
 package com.example.authapp.utils
 
+import com.example.authapp.core.utils.Resource
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class ResourceTest {
 
