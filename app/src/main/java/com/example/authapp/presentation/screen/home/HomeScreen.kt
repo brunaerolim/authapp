@@ -52,7 +52,10 @@ fun HomeScreen(
         userPreferences = state.userPreferences.value,
         isLoading = state.isLoading.value,
         showSignOutDialog = state.showSignOutDialog.value,
-        onSignOut = state.onSignOut,
+        onSignOut = {
+            state.onSignOut
+            state.onNavigateToSignOut()
+        },
         onShowSignOutDialog = state.onShowSignOutDialog,
         onHideSignOutDialog = state.onHideSignOutDialog,
         onRefreshUserData = state.onRefreshUserData

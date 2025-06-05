@@ -73,6 +73,11 @@ fun AuthNavGraph() {
                         navController.navigate(Destinations.SignIn.route) {
                             popUpTo(0) { inclusive = true }
                         }
+                    },
+                    onSignOut = {
+                        navController.navigate(Destinations.SignIn.route) {
+                            popUpTo(Destinations.SignIn.route) { inclusive = true }
+                        }
                     }
                 )
             )

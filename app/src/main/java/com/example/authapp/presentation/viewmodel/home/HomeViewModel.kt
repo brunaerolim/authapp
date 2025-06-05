@@ -68,17 +68,15 @@ class HomeViewModel @Inject constructor(
 
                 try {
                     userPreferencesDataStore.clearUserData()
-
                     authRepository.signOut()
-
                     _signOutSuccess.emit(Unit)
                 } catch (e: Exception) {
                     try {
                         userPreferencesDataStore.clearUserData()
+                        _signOutSuccess.emit(Unit)
                     } catch (clearException: Exception) {
+                        _signOutSuccess.emit(Unit)
                     }
-
-                    _signOutSuccess.emit(Unit)
                 } finally {
                     _showLoading.value = false
                 }
