@@ -30,7 +30,6 @@ class HomeViewModel @Inject constructor(
 
     // Events
     private val _signOutSuccess = MutableSharedFlow<Unit>()
-    val signOutSuccess: SharedFlow<Unit> = _signOutSuccess
 
     val currentUser = authRepository.currentUser.stateIn(
         viewModelScope,
