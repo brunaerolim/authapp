@@ -34,6 +34,9 @@ class SignInViewModel @Inject constructor(
     private val _errorMessage = MutableStateFlow("")
     val errorMessage: StateFlow<String> = _errorMessage.asStateFlow()
 
+    private val _toastMessage = MutableStateFlow("")
+    val toastMessage: StateFlow<String> = _toastMessage.asStateFlow()
+
     private val _email = MutableStateFlow("")
     val email: StateFlow<String> = _email.asStateFlow()
 
@@ -60,6 +63,9 @@ class SignInViewModel @Inject constructor(
 
     private val _startGoogleSignIn = MutableSharedFlow<Unit>()
     val startGoogleSignIn: SharedFlow<Unit> = _startGoogleSignIn.asSharedFlow()
+
+    private val _navigateToForgotPassword = MutableSharedFlow<Unit>()
+    val navigateToForgotPassword: SharedFlow<Unit> = _navigateToForgotPassword.asSharedFlow()
 
     init {
         loadUserPreferences()
@@ -262,7 +268,4 @@ class SignInViewModel @Inject constructor(
         return password.length >= 6
     }
 
-    fun dismissErrorMessage() {
-        _errorMessage.value = ""
-    }
 }

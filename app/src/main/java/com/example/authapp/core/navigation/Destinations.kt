@@ -1,7 +1,8 @@
 package com.example.authapp.core.navigation
 
-sealed class Destinations(val route: String) {
-    object SignIn : Destinations("sign_in")
-    object SignUp : Destinations("sign_up")
-    object Home : Destinations("home")
+object Destinations {
+    const val SIGN_IN = "signIn"
+    const val SIGN_UP = "signUp"
+    const val HOME = "home"
+    const val FORGOT_PASSWORD = "forgotPassword"
 }

@@ -23,7 +23,7 @@ private val LightColorScheme = lightColorScheme(
     tertiary = Pink40
 )
 
-// Tema rosinha pastel para SignUp
+// Tema rosinha pastel para SIGN_UP
 private val PastelPinkColorScheme = lightColorScheme(
     primary = PastelPink,
     onPrimary = Color.White,

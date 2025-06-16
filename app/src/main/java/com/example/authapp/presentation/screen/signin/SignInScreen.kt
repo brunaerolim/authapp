@@ -17,12 +17,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -51,6 +51,8 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -120,6 +122,7 @@ fun SignInScreen(
                     .padding(vertical = 16.dp)
                     .size(40.dp)
             )
+
             Text(
                 text = "Welcome Back!",
                 fontSize = 32.sp,
@@ -265,7 +268,7 @@ fun SignInScreen(
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp, top = 4.dp)
+                        .padding(start = 16.dp, top = 4.dp, bottom = 16.dp)
                 )
             }
 
@@ -327,6 +330,23 @@ fun SignInScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            // Forgot Password Link
+            ClickableText(
+                text = AnnotatedString("Forgot Password?"),
+                style = TextStyle(
+                    color = Pink40,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center
+                ),
+                onClick = {
+                    state.onNavigateToForgotPassword()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, bottom = 24.dp)
+            )
+
             // Divider
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -349,7 +369,7 @@ fun SignInScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Google Sign In Button
+            // Google Sign In Button (CORRIGIDO)
             OutlinedButton(
                 onClick = state.onGoogleSignIn,
                 modifier = Modifier
@@ -367,14 +387,14 @@ fun SignInScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.Search,
-                        contentDescription = null,
-                        tint = Pink40,
+                        painter = painterResource(R.drawable.ic_google), // Use ícone do Google correto
+                        contentDescription = "Google Icon",
+                        tint = Color.Unspecified, // Mantém cores originais do ícone
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        "Sign In with Google",
+                        "Continue with Google",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium
                     )

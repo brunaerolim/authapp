@@ -1,4 +1,3 @@
-// SignUpViewModel.kt
 package com.example.authapp.presentation.viewmodel.signup
 
 import android.util.Patterns
@@ -72,6 +71,9 @@ class SignUpViewModel @Inject constructor(
     private val _acceptTerms = MutableStateFlow(false)
     val acceptTerms: StateFlow<Boolean> = _acceptTerms.asStateFlow()
     private val _startGoogleSignIn = MutableSharedFlow<Unit>()
+
+    private val _navigateToBack = MutableSharedFlow<Unit>()
+    val navigateToBack: SharedFlow<Unit> = _navigateToBack.asSharedFlow()
 
     val startGoogleSignIn: SharedFlow<Unit> = _startGoogleSignIn.asSharedFlow()
 

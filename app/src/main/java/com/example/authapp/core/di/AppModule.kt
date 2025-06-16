@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.authapp.data.local.UserPreferencesDataStore
+import com.example.authapp.data.remote.FireBaseAuthDataSource
 import com.example.authapp.data.repository.AuthRepository
 import com.example.authapp.data.repository.AuthRepositoryImpl
-import com.example.authapp.data.local.UserPreferencesDataStore
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -64,9 +65,14 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAuthRepository(
+        dataSource: FireBaseAuthDataSource,
         auth: FirebaseAuth,
         googleSignInClient: GoogleSignInClient
     ): AuthRepository {
-        return AuthRepositoryImpl(auth, googleSignInClient)
+        return AuthRepositoryImpl(
+            googleSignInClient = googleSignInClient,
+            dataSource = dataSource,
+            auth = auth
+        )
     }
 }

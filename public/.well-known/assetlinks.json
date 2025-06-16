@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.example.authapp",
+      "sha256_cert_fingerprints": [
+        "EA:31:6D:97:47:88:E0:60:EF:33:D0:15:87:AA:C6:97:AE:9D:43:B8:0D:8F:69:8B:CF:79:25:C8:8E:02:12:DD"
+      ]
+    }
+  }
+]

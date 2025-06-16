@@ -7,6 +7,7 @@ import com.example.authapp.presentation.screen.signin.SignInFormState
 @Composable
 fun SignInViewModel.toScreenState(
     onNavigateToSignUp: () -> Unit = {},
+    onNavigateToForgotPassword: () -> Unit = {}
 ): SignInFormState {
     return SignInFormState(
         email = email.collectAsState(),
@@ -15,6 +16,7 @@ fun SignInViewModel.toScreenState(
         rememberMe = rememberMe.collectAsState(),
         isLoading = isLoading.collectAsState(),
         errorMessage = errorMessage.collectAsState(),
+        toastMessage = toastMessage.collectAsState(),
         emailError = emailError.collectAsState(),
         passwordError = passwordError.collectAsState(),
         isSignInEnabled = isSignInEnabled.collectAsState(),
@@ -28,6 +30,7 @@ fun SignInViewModel.toScreenState(
         onGoogleSignInResult = ::handleGoogleSignInResult,
         onNavigateToSignUp = onNavigateToSignUp,
         onEmailFocusLost = ::onEmailFocusLost,
-        onPasswordFocusLost = ::onPasswordFocusLost
+        onPasswordFocusLost = ::onPasswordFocusLost,
+        onNavigateToForgotPassword = onNavigateToForgotPassword,
     )
 }

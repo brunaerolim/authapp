@@ -24,4 +24,6 @@ interface AuthRepository {
     suspend fun signUp(email: String, password: String, name: String): Resource<AuthResult>
     suspend fun checkUserExists(email: String): Resource<Boolean>
     fun getCurrentUser(): FirebaseUser?
+    suspend fun sendPasswordResetEmail(email: String): Result<Unit>
+    suspend fun confirmPasswordReset(code: String, newPassword: String): Result<Unit>
 }

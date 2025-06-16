@@ -1,6 +1,7 @@
 package com.example.authapp.data.repository
 
 import com.example.authapp.core.utils.Resource
+import com.example.authapp.data.remote.FireBaseAuthDataSource
 import com.example.authapp.domain.model.User
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.AuthCredential
@@ -23,7 +24,8 @@ import javax.inject.Singleton
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
-    private val googleSignInClient: GoogleSignInClient
+    private val googleSignInClient: GoogleSignInClient,
+    private val dataSource: FireBaseAuthDataSource
 ) : AuthRepository {
 
     override val currentUser: Flow<User?> = callbackFlow {
@@ -175,6 +177,14 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun sendPasswordResetEmail(email: String): Result<Unit> {
+        return dataSource.sendPasswordResetEmail(email)
+    }
+
+    override suspend fun confirmPasswordReset(code: String, newPassword: String): Result<Unit> {
+        return dataSource.confirmPasswordReset(code, newPassword)
+    }
+
     private fun FirebaseUser?.toUser(): User? {
         return this?.let {
             User(
@@ -185,4 +195,5 @@ class AuthRepositoryImpl @Inject constructor(
             )
         }
     }
+
 }

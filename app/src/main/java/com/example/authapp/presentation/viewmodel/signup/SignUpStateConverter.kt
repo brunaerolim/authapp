@@ -7,6 +7,7 @@ import com.example.authapp.presentation.screen.signup.SignUpFormState
 @Composable
 fun SignUpViewModel.toScreenState(
     onNavigateToSignIn: () -> Unit = {},
+    onNavigateBack: () -> Unit = {}
 ): SignUpFormState {
     return SignUpFormState(
         name = name.collectAsState(),
@@ -39,6 +40,7 @@ fun SignUpViewModel.toScreenState(
         onGoogleSignUp = ::onGoogleSignUp,
         onGoogleSignUpResult = ::handleGoogleSignUpResult,
         onNavigateToSignIn = onNavigateToSignIn,
-        dismissSnackbar = ::dismissSnackbar
+        dismissSnackbar = ::dismissSnackbar,
+        onNavigateBack = onNavigateBack
     )
 }

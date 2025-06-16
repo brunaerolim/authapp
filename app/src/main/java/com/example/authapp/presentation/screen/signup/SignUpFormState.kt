@@ -35,5 +35,6 @@ data class SignUpFormState(
     val onGoogleSignUp: () -> Unit,
     val onGoogleSignUpResult: (GoogleSignInAccount?) -> Unit,
     val onNavigateToSignIn: () -> Unit,
-    val dismissSnackbar: () -> Unit
+    val dismissSnackbar: () -> Unit,
+    val onNavigateBack: () -> Unit
 )

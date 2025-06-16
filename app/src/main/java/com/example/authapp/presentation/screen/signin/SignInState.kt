@@ -11,6 +11,7 @@ data class SignInFormState(
     val rememberMe: State<Boolean>,
     val isLoading: State<Boolean>,
     val errorMessage: State<String>,
+    val toastMessage: State<String>,
     val emailError: State<Boolean>,
     val passwordError: State<Boolean>,
     val isSignInEnabled: State<Boolean>,
@@ -24,5 +25,6 @@ data class SignInFormState(
     val onGoogleSignInResult: (GoogleSignInAccount?) -> Unit,
     val onNavigateToSignUp: () -> Unit,
     val onEmailFocusLost: () -> Unit,
-    val onPasswordFocusLost: () -> Unit
+    val onPasswordFocusLost: () -> Unit,
+    val onNavigateToForgotPassword: () -> Unit,
 )
