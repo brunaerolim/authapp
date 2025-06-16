@@ -43,7 +43,7 @@ screenshots showing the current UI state of the app.
 
 - [✅] Firebase Authentication integration
 - [✅] Complete "Forgot Password" flow
-- [ ] Unit tests and instrumentation tests
+- [  ] Unit tests and instrumentation tests
 
 ## 🤝 Contributing
 
