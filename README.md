@@ -1,7 +1,7 @@
 # 🔐 Authentication App (Work in Progress)
 
 This is a mobile authentication project built using **Kotlin**, **Jetpack Compose**, **MVVM**, and *
-*Hilt** for dependency injection. The goal is to create a modern and robust authentication flow
+**Hilt** for dependency injection. The goal is to create a modern and robust authentication flow
 using **email/password** and **Google Sign-In**, following Google’s recommended best practices and
 clean architecture principles.
 
@@ -24,7 +24,7 @@ screenshots showing the current UI state of the app.
 
 ### Create Account Screen
 
-<img src="app/src/main/java/com/example/authapp/assets/screenshots/signup.png" alt="Sign In" width="300"/>
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/signup.png" alt="Sign Up" width="300"/>
 
 ---
 
@@ -32,11 +32,10 @@ screenshots showing the current UI state of the app.
 
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/signin.png" alt="Sign In" width="300"/>
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png" alt="Sign In" width="300"/>
-<img src="app/src/main/java/com/example/authapp/assets/screenshots/signin.png" alt="Sign In" width="300"/>
 
 ### Forgot Password Screen
 
-<img src="app/src/main/java/com/example/authapp/assets/screenshots/reset.png" alt="Sign In" width="300"/>
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/reset.png" alt="Reset Password" width="300"/>
 
 ---
 
