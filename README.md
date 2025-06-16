@@ -30,7 +30,7 @@ screenshots showing the current UI state of the app.
 
 ### Sign In Screen
 
-<img src="app/src/main/java/com/example/authapp/assets/screenshots/signin.png" alt="Sign In" width="300"/>
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/sa.png" alt="Sign In" width="300"/>
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png" alt="Sign In" width="300"/>
 
 ### Forgot Password Screen
