@@ -11,8 +11,9 @@ clean architecture principles.
 - **Jetpack Compose** – for declarative UI development
 - **MVVM Architecture** – clean separation of concerns
 - **Hilt** – for dependency injection
-- **Firebase Authentication** (coming soon)
+- **Firebase Authentication**
 - **Google Sign-In**
+- **Reset Password (w/ Firebase Hosting)**
 
 ## 🚧 Project Status
 
@@ -21,24 +22,28 @@ screenshots showing the current UI state of the app.
 
 ## 📱 Screenshots
 
-### 🆕 Create Account Screen
+### Create Account Screen
 
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/ca.png" alt="Create Account" width="300"/>
-
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/signup.png" alt="Sign In" width="300"/>
 ---
 
-### 🔐 Sign In Screen
+### Sign In Screen
 
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/signin.png" alt="Sign In" width="300"/>
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png" alt="Sign In" width="300"/>
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/signin.png" alt="Sign In" width="300"/>
+
+### Forgot Password Screen
+
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/reset.png" alt="Sign In" width="300"/>
 
 ---
 
-## ✅ Features Roadmap
+## Features Roadmap
 
-- [ ] Firebase Authentication integration
-- [ ] Regex-based validation and server-side feedback
-- [ ] Complete "Forgot Password" flow
+- [✅] Firebase Authentication integration
+- [✅] Complete "Forgot Password" flow
 - [ ] Unit tests and instrumentation tests
 
 ## 🤝 Contributing
