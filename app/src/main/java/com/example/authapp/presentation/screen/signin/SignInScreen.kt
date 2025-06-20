@@ -24,6 +24,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -51,7 +52,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -70,8 +70,6 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.example.authapp.R
-import com.example.authapp.presentation.theme.PastelPinkLight
-import com.example.authapp.presentation.theme.Pink40
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -118,7 +116,7 @@ fun SignInScreen(
                 keyboardController?.hide()
                 focusManager.clearFocus()
             },
-        color = Color.White
+        color = MaterialTheme.colorScheme.surface
     ) {
         ConstraintLayout(
             modifier = Modifier
@@ -144,9 +142,10 @@ fun SignInScreen(
             // Title
             Text(
                 text = stringResource(R.string.sign_in_welcome_back),
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                color = Pink40,
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.constrainAs(title) {
                     top.linkTo(logo.bottom, margin = 16.dp)
@@ -157,8 +156,9 @@ fun SignInScreen(
             // Subtitle
             Text(
                 text = stringResource(R.string.sign_in_subtitle),
-                fontSize = 16.sp,
-                color = Pink40.copy(alpha = 0.7f),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.constrainAs(subtitle) {
                     top.linkTo(title.bottom, margin = 8.dp)
@@ -276,7 +276,7 @@ fun SignInScreen(
             ClickableText(
                 text = AnnotatedString(stringResource(R.string.sign_in_forgot_password)),
                 style = TextStyle(
-                    color = Pink40,
+                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center
@@ -341,13 +341,12 @@ fun SignInScreen(
     }
 }
 
-
 @Composable
 private fun AppLogo(modifier: Modifier = Modifier) {
     Icon(
         painter = painterResource(R.drawable.ic_launcher),
         contentDescription = null,
-        tint = PastelPinkLight,
+        tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
         modifier = modifier.size(40.dp)
     )
 }
@@ -364,7 +363,12 @@ private fun EmailField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(stringResource(R.string.email_label), color = Pink40.copy(alpha = 0.7f)) },
+        label = {
+            Text(
+                stringResource(R.string.email_label),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+            )
+        },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next
@@ -377,18 +381,18 @@ private fun EmailField(
         isError = isError,
         shape = RoundedCornerShape(12.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Pink40,
-            unfocusedBorderColor = Pink40.copy(alpha = 0.5f),
-            focusedLabelColor = Pink40,
-            cursorColor = Pink40,
-            errorBorderColor = Color(0xFFE57373),
-            errorLabelColor = Color(0xFFE57373)
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            cursorColor = MaterialTheme.colorScheme.primary,
+            errorBorderColor = MaterialTheme.colorScheme.error,
+            errorLabelColor = MaterialTheme.colorScheme.error
         ),
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Email,
                 contentDescription = null,
-                tint = Pink40
+                tint = MaterialTheme.colorScheme.primary
             )
         }
     )
@@ -411,7 +415,7 @@ private fun PasswordField(
         label = {
             Text(
                 stringResource(R.string.password_label),
-                color = Pink40.copy(alpha = 0.7f)
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
         },
         visualTransformation = if (isVisible) {
@@ -431,18 +435,18 @@ private fun PasswordField(
         isError = isError,
         shape = RoundedCornerShape(12.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Pink40,
-            unfocusedBorderColor = Pink40.copy(alpha = 0.5f),
-            focusedLabelColor = Pink40,
-            cursorColor = Pink40,
-            errorBorderColor = Color(0xFFE57373),
-            errorLabelColor = Color(0xFFE57373)
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            cursorColor = MaterialTheme.colorScheme.primary,
+            errorBorderColor = MaterialTheme.colorScheme.error,
+            errorLabelColor = MaterialTheme.colorScheme.error
         ),
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Lock,
                 contentDescription = null,
-                tint = Pink40
+                tint = MaterialTheme.colorScheme.primary
             )
         },
         trailingIcon = {
@@ -456,7 +460,7 @@ private fun PasswordField(
                     contentDescription = if (isVisible) stringResource(R.string.hide_password) else stringResource(
                         R.string.show_password
                     ),
-                    tint = Pink40
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -477,16 +481,16 @@ private fun RememberMeRow(
             checked = isChecked,
             onCheckedChange = onCheckedChange,
             colors = CheckboxDefaults.colors(
-                checkedColor = Pink40,
-                uncheckedColor = Pink40.copy(alpha = 0.6f),
-                checkmarkColor = Color.White
+                checkedColor = MaterialTheme.colorScheme.primary,
+                uncheckedColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
+                checkmarkColor = MaterialTheme.colorScheme.onPrimary
             )
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = stringResource(R.string.sign_in_remember_me),
             style = MaterialTheme.typography.bodyMedium,
-            color = Pink40.copy(alpha = 0.8f)
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
         )
     }
 }
@@ -504,9 +508,9 @@ private fun PrimaryButton(
         modifier = modifier.height(56.dp),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Pink40,
-            contentColor = Color.White,
-            disabledContainerColor = Pink40.copy(alpha = 0.5f)
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
         ),
         shape = RoundedCornerShape(12.dp),
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
@@ -514,14 +518,15 @@ private fun PrimaryButton(
         if (isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.size(20.dp),
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 strokeWidth = 2.dp
             )
         } else {
             Text(
                 text = text,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
+                style = MaterialTheme.typography.labelLarge.copy(
+                    fontWeight = FontWeight.Medium
+                )
             )
         }
     }
@@ -538,16 +543,16 @@ private fun DividerWithText(
     ) {
         Divider(
             modifier = Modifier.weight(1f),
-            color = Pink40.copy(alpha = 0.3f)
+            color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
         )
         Text(
             text = "  $text  ",
-            color = Pink40.copy(alpha = 0.6f),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
             style = MaterialTheme.typography.bodyMedium
         )
         Divider(
             modifier = Modifier.weight(1f),
-            color = Pink40.copy(alpha = 0.3f)
+            color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
         )
     }
 }
@@ -563,9 +568,9 @@ private fun GoogleSignInButton(
         modifier = modifier.height(56.dp),
         enabled = enabled,
         colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = Pink40
+            contentColor = MaterialTheme.colorScheme.primary
         ),
-        border = BorderStroke(1.dp, Pink40),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
         shape = RoundedCornerShape(12.dp)
     ) {
         Row(
@@ -573,16 +578,17 @@ private fun GoogleSignInButton(
             horizontalArrangement = Arrangement.Center
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_google),
+                imageVector = Icons.Default.Search, // Em um app real, use o ícone do Google
                 contentDescription = "Google Icon",
-                tint = Color.Unspecified,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(20.dp)
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 stringResource(R.string.sign_in_continue_with_google),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
+                style = MaterialTheme.typography.labelLarge.copy(
+                    fontWeight = FontWeight.Medium
+                )
             )
         }
     }
@@ -601,7 +607,7 @@ private fun SignUpRow(
     ) {
         Text(
             text = stringResource(R.string.sign_in_dont_have_account),
-            color = Pink40.copy(alpha = 0.7f),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
             style = MaterialTheme.typography.bodyMedium
         )
         TextButton(
@@ -610,9 +616,10 @@ private fun SignUpRow(
         ) {
             Text(
                 text = "Sign Up",
-                color = Pink40,
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.bodyMedium
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Bold
+                )
             )
         }
     }
@@ -625,7 +632,7 @@ private fun ErrorText(
 ) {
     Text(
         text = text,
-        color = Color(0xFFE57373),
+        color = MaterialTheme.colorScheme.error,
         style = MaterialTheme.typography.bodySmall,
         modifier = modifier
     )
@@ -639,13 +646,13 @@ private fun ErrorCard(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFFFEBEE)
+            containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.1f)
         ),
         shape = RoundedCornerShape(8.dp)
     ) {
         Text(
             text = message,
-            color = Color(0xFFE57373),
+            color = MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(16.dp)
         )

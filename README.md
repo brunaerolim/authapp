@@ -1,6 +1,6 @@
 # 🔐 Authentication App (Work in Progress)
 
-This is a mobile authentication project built using **Kotlin**, **Jetpack Compose**, **MVVM**, and *
+This is a mobile authentication project built using **Kotlin**, **Jetpack Compose**, **MVVM**, and
 **Hilt** for dependency injection. The goal is to create a modern and robust authentication flow
 using **email/password** and **Google Sign-In**, following Google’s recommended best practices and
 clean architecture principles.
