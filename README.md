@@ -25,17 +25,18 @@ screenshots showing the current UI state of the app.
 ### Create Account Screen
 
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/signup.png" alt="Sign Up" width="300"/>
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png" alt="Sign Up Google" width="300"/>
 
 ---
 
 ### Sign In Screen
 
-<img src="app/src/main/java/com/example/authapp/assets/screenshots/sa.png" alt="Sign In" width="300"/>
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/signin.png" alt="Sign In" width="300"/>
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png" alt="Sign In" width="300"/>
 
 ### Forgot Password Screen
 
-<img src="app/src/main/java/com/example/authapp/assets/screenshots/reset.png" alt="Reset Password" width="300"/>
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/forgotpassword.png" alt="Forgot Password" width="300"/>
 
 ---
 
