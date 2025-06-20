@@ -1,6 +1,9 @@
 package com.example.authapp.presentation.screen.signin.forgot
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,7 +28,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -35,194 +37,333 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.authapp.presentation.theme.Pink40
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import com.example.authapp.R
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ForgotPasswordScreen(
-    state: ForgotPasswordState
+    state: ForgotPasswordState,
+    modifier: Modifier = Modifier
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
-    val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
 
-    LaunchedEffect(state.successMessage.value) {
-        state.successMessage.value?.let { message ->
-            snackbarHostState.showSnackbar(
-                message = message,
-                withDismissAction = true
-            )
-        }
-    }
-
-    LaunchedEffect(state.errorMessage.value) {
-        state.errorMessage.value?.let { message ->
-            snackbarHostState.showSnackbar(
-                message = message,
-                withDismissAction = true
-            )
-        }
-    }
+    // Handle snackbar messages
+    HandleSnackbarMessages(
+        snackbarHostState = snackbarHostState,
+        successMessage = state.successMessage.value,
+        errorMessage = state.errorMessage.value
+    )
 
     Scaffold(
+        modifier = modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(
-                title = { "" },
-                navigationIcon = {
-                    IconButton(onClick = state.onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = Pink40,
-                    navigationIconContentColor = Pink40
-                )
-            )
+            ForgotPasswordTopBar(onNavigateBack = state.onNavigateBack)
         },
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         }
-    ) { padding ->
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
-            color = Color.White
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Forgot Password?",
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Pink40,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(bottom = 8.dp)
+    ) { paddingValues ->
+        ForgotPasswordContent(
+            state = state,
+            paddingValues = paddingValues,
+            keyboardController = keyboardController,
+            focusManager = focusManager
+        )
+    }
+}
+
+@Composable
+private fun HandleSnackbarMessages(
+    snackbarHostState: SnackbarHostState,
+    successMessage: String?,
+    errorMessage: String?
+) {
+    LaunchedEffect(successMessage) {
+        successMessage?.let { message ->
+            snackbarHostState.showSnackbar(
+                message = message,
+                withDismissAction = true
+            )
+        }
+    }
+
+    LaunchedEffect(errorMessage) {
+        errorMessage?.let { message ->
+            snackbarHostState.showSnackbar(
+                message = message,
+                withDismissAction = true
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ForgotPasswordTopBar(
+    onNavigateBack: () -> Unit
+) {
+    TopAppBar(
+        title = { Text("") },
+        navigationIcon = {
+            IconButton(onClick = onNavigateBack) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = stringResource(R.string.back_button_description),
+                    tint = MaterialTheme.colorScheme.primary
                 )
-
-                Text(
-                    text = "Enter your email to receive a reset link",
-                    fontSize = 16.sp,
-                    color = Pink40.copy(alpha = 0.7f),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(bottom = 40.dp)
-                )
-
-                // Email Field
-                OutlinedTextField(
-                    value = state.email.value,
-                    onValueChange = state.onEmailChanged,
-                    label = {
-                        Text(
-                            "Email",
-                            color = Pink40.copy(alpha = 0.7f)
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            keyboardController?.hide()
-                            state.onEmailFocusLost()
-                        }
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onFocusChanged { focusState ->
-                            if (!focusState.isFocused) {
-                                state.onEmailFocusLost()
-                            }
-                        },
-                    singleLine = true,
-                    isError = state.emailError.value,
-                    shape = RoundedCornerShape(12.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Pink40,
-                        unfocusedBorderColor = Pink40.copy(alpha = 0.5f),
-                        focusedLabelColor = Pink40,
-                        cursorColor = Pink40,
-                        errorBorderColor = Color(0xFFE57373),
-                        errorLabelColor = Color(0xFFE57373)
-                    ),
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Email,
-                            contentDescription = null,
-                            tint = Pink40
-                        )
-                    }
-                )
-
-                if (state.emailError.value) {
-                    Text(
-                        text = if (state.email.value.trim().isEmpty()) {
-                            "Email is required"
-                        } else {
-                            "Please insert a valid email"
-                        },
-                        color = Color(0xFFE57373),
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, top = 4.dp, bottom = 16.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // Send Email Button
-                Button(
-                    onClick = {
-                        keyboardController?.hide()
-                        state.onSendEmail()
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    enabled = state.isSendEmailEnabled.value && !state.isLoading.value,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Pink40,
-                        contentColor = Color.White,
-                        disabledContainerColor = Pink40.copy(alpha = 0.5f)
-                    ),
-                    shape = RoundedCornerShape(12.dp),
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
-                ) {
-                    if (state.isLoading.value) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
-                            color = Color.White,
-                            strokeWidth = 2.dp
-                        )
-                    } else {
-                        Text(
-                            "Send Reset Link",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                }
             }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            navigationIconContentColor = MaterialTheme.colorScheme.primary
+        )
+    )
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun ForgotPasswordContent(
+    state: ForgotPasswordState,
+    paddingValues: PaddingValues,
+    keyboardController: SoftwareKeyboardController?,
+    focusManager: FocusManager
+) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+            .padding(horizontal = 24.dp)
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) {
+                // Hide keyboard when clicking outside
+                keyboardController?.hide()
+                focusManager.clearFocus()
+            }
+    ) {
+        val (header, form, button) = createRefs()
+
+        // Header Section
+        ForgotPasswordHeader(
+            modifier = Modifier.constrainAs(header) {
+                top.linkTo(parent.top, margin = 32.dp)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                width = Dimension.fillToConstraints
+            }
+        )
+
+        // Form Section
+        ForgotPasswordForm(
+            state = state,
+            keyboardController = keyboardController,
+            modifier = Modifier.constrainAs(form) {
+                top.linkTo(header.bottom, margin = 40.dp)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                width = Dimension.fillToConstraints
+            }
+        )
+
+        // Button Section
+        ForgotPasswordButton(
+            state = state,
+            keyboardController = keyboardController,
+            focusManager = focusManager,
+            modifier = Modifier.constrainAs(button) {
+                top.linkTo(form.bottom, margin = 32.dp)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                width = Dimension.fillToConstraints
+            }
+        )
+    }
+}
+
+@Composable
+private fun ForgotPasswordHeader(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(R.string.forgot_password_title),
+            style = MaterialTheme.typography.headlineMedium.copy(
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            ),
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = stringResource(R.string.forgot_password_subtitle),
+            style = MaterialTheme.typography.bodyMedium.copy(
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+            ),
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun ForgotPasswordForm(
+    state: ForgotPasswordState,
+    keyboardController: SoftwareKeyboardController?,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        EmailTextField(
+            value = state.email.value,
+            onValueChange = state.onEmailChanged,
+            onFocusLost = state.onEmailFocusLost,
+            isError = state.emailError.value,
+            keyboardController = keyboardController,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        if (state.emailError.value) {
+            EmailErrorText(
+                email = state.email.value,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, top = 4.dp)
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun EmailTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    onFocusLost: () -> Unit,
+    isError: Boolean,
+    keyboardController: SoftwareKeyboardController?,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = {
+            Text(
+                text = stringResource(R.string.email_label),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+            )
+        },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Email,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                keyboardController?.hide()
+                onFocusLost()
+            }
+        ),
+        modifier = modifier.onFocusChanged { focusState ->
+            if (!focusState.isFocused) {
+                onFocusLost()
+            }
+        },
+        singleLine = true,
+        isError = isError,
+        shape = RoundedCornerShape(12.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            cursorColor = MaterialTheme.colorScheme.primary,
+            errorBorderColor = MaterialTheme.colorScheme.error,
+            errorLabelColor = MaterialTheme.colorScheme.error
+        )
+    )
+}
+
+@Composable
+private fun EmailErrorText(
+    email: String,
+    modifier: Modifier = Modifier
+) {
+    val errorMessage = if (email.trim().isEmpty()) {
+        stringResource(R.string.email_required_error)
+    } else {
+        stringResource(R.string.email_invalid_error)
+    }
+
+    Text(
+        text = errorMessage,
+        color = MaterialTheme.colorScheme.error,
+        style = MaterialTheme.typography.bodySmall,
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun ForgotPasswordButton(
+    state: ForgotPasswordState,
+    keyboardController: SoftwareKeyboardController?,
+    focusManager: FocusManager,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = {
+            keyboardController?.hide()
+            focusManager.clearFocus()
+            state.onSendEmail()
+        },
+        modifier = modifier.height(56.dp),
+        enabled = state.isSendEmailEnabled.value && !state.isLoading.value,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+        ),
+        shape = RoundedCornerShape(12.dp),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
+    ) {
+        if (state.isLoading.value) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(20.dp),
+                color = MaterialTheme.colorScheme.onPrimary,
+                strokeWidth = 2.dp
+            )
+        } else {
+            Text(
+                text = stringResource(R.string.send_reset_link_button),
+                style = MaterialTheme.typography.labelLarge.copy(
+                    fontWeight = FontWeight.Medium
+                )
+            )
         }
     }
 }

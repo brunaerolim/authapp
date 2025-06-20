@@ -1,4 +1,52 @@
 <resources>
     <string name="app_name">Authapp</string>
     <string name="default_web_client_id"> </string>
+
+    <!-- Forgot Password -->
+    <string name="forgot_password_title">Forgot Password?</string>
+    <string name="forgot_password_subtitle">Enter your email to receive a reset link</string>
+    <string name="email_label">Email</string>
+    <string name="email_required_error">Email is required</string>
+    <string name="email_invalid_error">Please insert a valid email</string>
+    <string name="send_reset_link_button">Send Reset Link</string>
+    <string name="back_button_description">Back</string>
+
+    <!-- Sign Up -->
+    <string name="create_account_title">Create Account</string>
+    <string name="create_account_subtitle">Join us and start your journey</string>
+    <string name="full_name_label">Full Name</string>
+    <string name="password_label">Password</string>
+    <string name="confirm_password_label">Confirm Password</string>
+    <string name="name_error_message">Name must be at least 2 characters</string>
+    <string name="password_error_message">Password must be at least 6 characters</string>
+    <string name="passwords_not_match_error">Passwords do not match</string>
+    <string name="accept_terms_message">I accept the Terms and Conditions</string>
+    <string name="create_account_button">Create Account</string>
+    <string name="or_divider">OR</string>
+    <string name="google_signup_button">Sign Up with Google</string>
+    <string name="already_have_account">Already have an account? </string>
+    <string name="sign_in_link">Sign In</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="google_signup_failed">Google Sign-Up failed: %s</string>
+
+    <!-- Sign In -->
+    <string name="sign_in_welcome_back">Welcome Back!</string>
+    <string name="sign_in_subtitle">Sign in to your account</string>
+    <string name="sign_in_email_label">Email</string>
+    <string name="sign_in_email_required_error">Email is required</string>
+    <string name="sign_in_email_invalid_error">Please insert a valid email</string>
+    <string name="sign_in_password_label">Password</string>
+    <string name="sign_in_password_required_error">Password is required</string>
+    <string name="sign_in_password_length_error">Password must be at least 6 characters</string>
+    <string name="sign_in_remember_me">Remember me</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="sign_in_forgot_password">Forgot Password?</string>
+    <string name="sign_in_or_divider">OR</string>
+    <string name="sign_in_continue_with_google">Continue with Google</string>
+    <string name="sign_in_dont_have_account">Don\'t have an account? </string>
+    <string name="sign_in_sign_up">Sign Up</string>
+    <string name="sign_in_show_password">Show password</string>
+    <string name="sign_in_hide_password">Hide password</string>
+    <string name="sign_in_google_sign_in_failed">Google Sign-In failed: %s</string>
 </resources>
