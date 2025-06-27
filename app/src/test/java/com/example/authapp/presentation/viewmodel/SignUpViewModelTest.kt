@@ -1,7 +1,7 @@
 package com.example.authapp.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.authapp.data.repository.AuthRepository
+import com.example.authapp.data.repository.auth.AuthRepository
 import com.example.authapp.data.local.UserPreferences
 import com.example.authapp.data.local.UserPreferencesDataStore
 import com.example.authapp.presentation.viewmodel.signup.SignUpViewModel

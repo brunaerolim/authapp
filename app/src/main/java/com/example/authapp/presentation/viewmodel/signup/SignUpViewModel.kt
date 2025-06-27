@@ -5,11 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.authapp.core.utils.Resource
 import com.example.authapp.data.local.UserPreferencesDataStore
-import com.example.authapp.data.repository.AuthRepository
+import com.example.authapp.data.repository.auth.AuthRepository
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -21,10 +20,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
-import javax.inject.Inject
 
-@HiltViewModel
-class SignUpViewModel @Inject constructor(
+class SignUpViewModel(
     private val authRepository: AuthRepository,
     private val userPreferencesDataStore: UserPreferencesDataStore
 ) : ViewModel() {
@@ -192,7 +189,7 @@ class SignUpViewModel @Inject constructor(
                 }
 
                 is Resource.Failure -> {
-                    _errorToastMessage.value = result.exception.message ?: "Sign up failed"
+                    _errorToastMessage.value = result.throwable.message ?: "Sign up failed"
                 }
 
                 is Resource.Loading -> { /* handled by showLoading */
@@ -220,7 +217,7 @@ class SignUpViewModel @Inject constructor(
                 }
 
                 is Resource.Failure -> {
-                    _errorToastMessage.value = result.exception.message ?: "Google sign up failed"
+                    _errorToastMessage.value = result.throwable.message ?: "Google sign up failed"
                 }
 
                 is Resource.Loading -> { /* handled by showLoading */
@@ -260,7 +257,7 @@ class SignUpViewModel @Inject constructor(
 
                         is Resource.Failure -> {
                             _errorToastMessage.value =
-                                result.exception.message ?: "Google sign up failed"
+                                result.throwable.message ?: "Google sign up failed"
                         }
 
                         is Resource.Loading -> { /* handled by isLoading */

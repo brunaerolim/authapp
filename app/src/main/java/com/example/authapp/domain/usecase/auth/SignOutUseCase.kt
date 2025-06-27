@@ -1,6 +1,6 @@
 package com.example.authapp.domain.usecase.auth
 
-import com.example.authapp.data.repository.AuthRepository
+import com.example.authapp.data.repository.auth.AuthRepository
 import com.example.authapp.data.local.UserPreferencesDataStore
 import javax.inject.Inject
 

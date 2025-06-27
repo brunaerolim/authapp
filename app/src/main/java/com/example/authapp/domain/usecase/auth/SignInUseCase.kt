@@ -1,6 +1,6 @@
 package com.example.authapp.domain.usecase.auth
 
-import com.example.authapp.data.repository.AuthRepository
+import com.example.authapp.data.repository.auth.AuthRepository
 import com.example.authapp.data.local.UserPreferencesDataStore
 import com.example.authapp.core.utils.Resource
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +32,7 @@ class SignInUseCase @Inject constructor(
                     emit(Resource.Success(Unit))
                 }
                 is Resource.Failure -> {
-                    emit(Resource.Failure(result.exception))
+                    emit(Resource.Failure(result.throwable))
                 }
                 is Resource.Loading -> {
                     emit(Resource.Loading)

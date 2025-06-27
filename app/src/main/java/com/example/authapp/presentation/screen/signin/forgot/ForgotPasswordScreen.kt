@@ -14,7 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -122,7 +122,7 @@ private fun ForgotPasswordTopBar(
         navigationIcon = {
             IconButton(onClick = onNavigateBack) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.Default.ArrowBackIosNew,
                     contentDescription = stringResource(R.string.back_button_description),
                     tint = MaterialTheme.colorScheme.primary
                 )
@@ -135,7 +135,6 @@ private fun ForgotPasswordTopBar(
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun ForgotPasswordContent(
     state: ForgotPasswordState,
@@ -152,7 +151,6 @@ private fun ForgotPasswordContent(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }
             ) {
-                // Hide keyboard when clicking outside
                 keyboardController?.hide()
                 focusManager.clearFocus()
             }
@@ -327,7 +325,6 @@ private fun EmailErrorText(
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun ForgotPasswordButton(
     state: ForgotPasswordState,

@@ -2,21 +2,21 @@ package com.example.authapp.presentation.viewmodel.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.authapp.data.local.UserPreferences
 import com.example.authapp.data.local.UserPreferencesDataStore
-import com.example.authapp.data.repository.AuthRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.authapp.data.repository.auth.AuthRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
-import javax.inject.Inject
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
+class HomeViewModel(
     private val authRepository: AuthRepository,
     private val userPreferencesDataStore: UserPreferencesDataStore
 ) : ViewModel() {
@@ -27,8 +27,8 @@ class HomeViewModel @Inject constructor(
     private val _showSignOutDialog = MutableStateFlow(false)
     val showSignOutDialog: StateFlow<Boolean> = _showSignOutDialog.asStateFlow()
 
-    // Events
     private val _signOutSuccess = MutableSharedFlow<Unit>()
+    val signOutSuccess: SharedFlow<Unit> = _signOutSuccess.asSharedFlow()
 
     val currentUser = authRepository.currentUser.stateIn(
         viewModelScope,
@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(
     val userPreferences = userPreferencesDataStore.userPreferences.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
-        com.example.authapp.data.local.UserPreferences(
+        UserPreferences(
             userId = "",
             userName = "",
             userEmail = "",

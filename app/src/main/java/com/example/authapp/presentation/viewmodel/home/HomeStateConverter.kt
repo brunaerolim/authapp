@@ -8,6 +8,7 @@ import com.example.authapp.presentation.screen.home.HomeScreenState
 fun HomeViewModel.toScreenState(
     onNavigateToSignIn: () -> Unit,
     onSignOut: () -> Unit,
+    onNavigateToCardValidation: () -> Unit
 ): HomeScreenState {
     return HomeScreenState(
         currentUser = currentUser.collectAsState(),
@@ -19,6 +20,7 @@ fun HomeViewModel.toScreenState(
         onHideSignOutDialog = ::hideSignOutDialog,
         onRefreshUserData = ::refreshUserData,
         onNavigateToSignIn = onNavigateToSignIn,
-        onNavigateToSignOut = onSignOut
+        onNavigateToSignOut = onSignOut,
+        onNavigateToCardValidation = onNavigateToCardValidation
     )
 }

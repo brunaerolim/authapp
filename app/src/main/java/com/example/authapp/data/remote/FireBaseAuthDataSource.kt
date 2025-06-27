@@ -5,7 +5,7 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class FireBaseAuthDataSource @Inject constructor(
+class FireBaseAuthDataSource(
     private val firebaseAuth: FirebaseAuth
 ) {
 

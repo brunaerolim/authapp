@@ -1,4 +1,4 @@
-package com.example.authapp.data.repository
+package com.example.authapp.data.repository.auth
 
 import com.example.authapp.core.utils.Resource
 import com.example.authapp.domain.model.User

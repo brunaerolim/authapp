@@ -1,34 +1,20 @@
 package com.example.authapp.presentation.viewmodel.signin.resetpassword
 
+import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
+import com.example.authapp.data.repository.auth.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class ForgotPasswordViewModel @Inject constructor() : ViewModel() {
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
-    private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
-
-    private val _successMessage = MutableStateFlow<String?>(null)
-    val successMessage: StateFlow<String?> = _successMessage.asStateFlow()
-    private val _isPasswordVisible = MutableStateFlow(false)
-    val isPasswordVisible: StateFlow<Boolean> = _isPasswordVisible.asStateFlow()
+class ForgotPasswordViewModel(
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     private val _email = MutableStateFlow("")
     val email: StateFlow<String> = _email.asStateFlow()
@@ -38,95 +24,57 @@ class ForgotPasswordViewModel @Inject constructor() : ViewModel() {
 
     private val _emailTouched = MutableStateFlow(false)
 
-    private val _navigateToResetPassword = MutableSharedFlow<String>()
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    private val _navigateToBack = MutableSharedFlow<Unit>()
-    val navigateToBack: SharedFlow<Unit> = _navigateToBack.asSharedFlow()
+    private val _errorToastMessage = MutableStateFlow("")
+    val errorToastMessage: StateFlow<String> = _errorToastMessage.asStateFlow()
 
+    private val _successToastMessage = MutableStateFlow("")
+    val successToastMessage: StateFlow<String> = _successToastMessage.asStateFlow()
 
-    val isSendEmailEnabled = combine(
+    val sendEnabled: StateFlow<Boolean> = combine(
         _email,
-        _emailError
-    ) { email, emailError ->
-        email.trim().isNotBlank() && !emailError && isValidEmail(email.trim())
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = false
-    )
-
-    fun sendPasswordResetEmail() {
-        viewModelScope.launch {
-            _isLoading.update { true }
-            clearMessages()
-
-            FirebaseAuth.getInstance().sendPasswordResetEmail(_email.value.trim())
-                .addOnCompleteListener { task ->
-                    _isLoading.update { false }
-                    if (task.isSuccessful) {
-                        _successMessage.update { "Password reset email sent successfully!" }
-                        viewModelScope.launch {
-                            delay(1500) // Pequeno delay para mostrar a mensagem
-                            _navigateToResetPassword.emit(_email.value.trim())
-                        }
-                    } else {
-                        val errorMessage = when (task.exception?.message) {
-                            "There is no user record corresponding to this identifier. The user may have been deleted." ->
-                                "No account found with this email address"
-
-                            "The email address is badly formatted." ->
-                                "Invalid email address format"
-
-                            else -> task.exception?.localizedMessage
-                                ?: "Failed to send password reset email"
-                        }
-                        _errorMessage.update { errorMessage }
-                    }
-                }
-        }
-    }
-
-    fun onNavigateBack() {
-        viewModelScope.launch {
-            _navigateToBack.emit(Unit)
-        }
-    }
-
-    fun clearMessages() {
-        _errorMessage.update { null }
-        _successMessage.update { null }
-    }
-
-    private fun validateEmailRealTime(email: String) {
-        val trimmedEmail = email.trim()
-        _emailError.value = if (trimmedEmail.isEmpty()) {
-            false
-        } else {
-            !isValidEmail(trimmedEmail)
-        }
-    }
-
-    private fun validateEmail() {
-        val trimmedEmail = _email.value.trim()
-        _emailError.value = trimmedEmail.isEmpty() || !isValidEmail(trimmedEmail)
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    // Event handlers
+        _emailError,
+        _isLoading
+    ) { email, emailError, loading ->
+        email.isNotBlank() && !emailError && !loading
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
     fun onEmailChange(newEmail: String) {
         _email.value = newEmail
-        _emailTouched.value = true
         if (_emailTouched.value) {
-            validateEmailRealTime(newEmail)
+            _emailError.value = !Patterns.EMAIL_ADDRESS.matcher(newEmail.trim()).matches()
         }
     }
 
     fun onEmailFocusLost() {
         _emailTouched.value = true
-        validateEmail()
+        _emailError.value = !Patterns.EMAIL_ADDRESS.matcher(_email.value.trim()).matches()
+    }
+
+    fun sendPasswordResetEmail() {
+        if (!sendEnabled.value) return
+
+        viewModelScope.launch {
+            _isLoading.value = true
+            _errorToastMessage.value = ""
+            _successToastMessage.value = ""
+
+            val result = authRepository.sendPasswordResetEmail(_email.value.trim())
+            if (result.isSuccess) {
+                _successToastMessage.value = "Reset email sent successfully"
+            } else {
+                _errorToastMessage.value =
+                    result.exceptionOrNull()?.message ?: "Failed to send reset email"
+            }
+
+            _isLoading.value = false
+        }
+    }
+
+    fun clearMessages() {
+        _errorToastMessage.value = ""
+        _successToastMessage.value = ""
     }
 }

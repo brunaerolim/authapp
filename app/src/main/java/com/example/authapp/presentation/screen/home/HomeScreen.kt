@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
@@ -39,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.authapp.data.local.UserPreferences
 import com.example.authapp.domain.model.User
 import com.example.authapp.presentation.theme.PastelPink
 import com.example.authapp.presentation.theme.PastelPinkDark
@@ -53,25 +55,27 @@ fun HomeScreen(
         isLoading = state.isLoading.value,
         showSignOutDialog = state.showSignOutDialog.value,
         onSignOut = {
-            state.onSignOut
+            state.onSignOut()
             state.onNavigateToSignOut()
         },
         onShowSignOutDialog = state.onShowSignOutDialog,
         onHideSignOutDialog = state.onHideSignOutDialog,
-        onRefreshUserData = state.onRefreshUserData
+        onRefreshUserData = state.onRefreshUserData,
+        onNavigateToCardValidation = state.onNavigateToCardValidation
     )
 }
 
 @Composable
 fun HomeContent(
     currentUser: User?,
-    userPreferences: com.example.authapp.data.local.UserPreferences,
+    userPreferences: UserPreferences,
     isLoading: Boolean,
     showSignOutDialog: Boolean,
     onSignOut: () -> Unit,
     onShowSignOutDialog: () -> Unit,
     onHideSignOutDialog: () -> Unit,
-    onRefreshUserData: () -> Unit
+    onRefreshUserData: () -> Unit,
+    onNavigateToCardValidation: () -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -137,6 +141,27 @@ fun HomeContent(
                             color = PastelPinkDark.copy(alpha = 0.7f),
                             modifier = Modifier.padding(bottom = 32.dp)
                         )
+
+                        // Card Validation Button (novo)
+                        Button(
+                            onClick = onNavigateToCardValidation,
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = PastelPink,
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.CreditCard,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Validate Card")
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),

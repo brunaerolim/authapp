@@ -14,5 +14,6 @@ data class HomeScreenState(
     val onHideSignOutDialog: () -> Unit,
     val onRefreshUserData: () -> Unit,
     val onNavigateToSignIn: () -> Unit,
-    val onNavigateToSignOut: () -> Unit
+    val onNavigateToSignOut: () -> Unit,
+    val onNavigateToCardValidation: () -> Unit
 )

@@ -5,8 +5,8 @@ import androidx.compose.runtime.State
 data class ForgotPasswordState(
     val email: State<String>,
     val isLoading: State<Boolean>,
-    val errorMessage: State<String?>,
-    val successMessage: State<String?>,
+    val errorMessage: State<String>,
+    val successMessage: State<String>,
     val emailError: State<Boolean>,
     val isSendEmailEnabled: State<Boolean>,
     val onEmailChanged: (String) -> Unit,
