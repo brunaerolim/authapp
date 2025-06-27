@@ -1,6 +1,6 @@
 # 🔐 Authentication & Payment Card Validation App (Work in Progress)
 
-This mobile application combines user authentication and payment card validation, built with **Kotlin**, **Jetpack Compose**, **MVVM**, and **Hilt** for dependency injection. The goal is to deliver a modern, robust authentication flow using email/password and Google Sign-In, alongside a custom payment card validation feature, all following Google's best practices and clean architecture principles.
+This mobile application combines user authentication and payment card validation, built with **Kotlin**, **Jetpack Compose**, **MVVM**, and **Koin** for dependency injection. The goal is to deliver a modern, robust authentication flow using email/password and Google Sign-In, alongside a custom payment card validation feature, all following Google's best practices and clean architecture principles.
 
 ## 🛠️ Technologies Used
 
