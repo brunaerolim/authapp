@@ -7,7 +7,8 @@ This mobile application combines user authentication and payment card validation
 - **Kotlin**
 - **Jetpack Compose** – declarative UI development
 - **MVVM Architecture** – clear separation of concerns
-- **Hilt** – dependency injection
+- **Koin** – dependency injection
+- **Stripe** - payment
 - **Firebase Authentication**
 - **Google Sign-In**
 - **Custom Payment Card Validation**
