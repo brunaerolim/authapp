@@ -1,10 +1,6 @@
 # 🔐 Authentication & Payment Card Validation App (Work in Progress)
 
-This mobile application combines user authentication and payment card validation, built with *
-*Kotlin**, **Jetpack Compose**, **MVVM**, and **Hilt** for dependency injection. The goal is to
-deliver a modern, robust authentication flow using email/password and Google Sign-In, alongside a
-custom payment card validation feature, all following Google's best practices and clean architecture
-principles.
+This mobile application combines user authentication and payment card validation, built with **Kotlin**, **Jetpack Compose**, **MVVM**, and **Hilt** for dependency injection. The goal is to deliver a modern, robust authentication flow using email/password and Google Sign-In, alongside a custom payment card validation feature, all following Google's best practices and clean architecture principles.
 
 ## 🛠️ Technologies Used
 
@@ -19,8 +15,7 @@ principles.
 
 ## 🚧 Project Status
 
-This project is actively under development. Core authentication and card validation features are
-implemented and undergoing testing.
+This project is actively under development. Core authentication and card validation features are implemented and undergoing testing.
 
 ### Completed Features
 
@@ -37,25 +32,28 @@ implemented and undergoing testing.
 
 ### Sign Up Screen
 
-![Sign Up](app/src/main/java/com/example/authapp/assets/screenshots/signup.png)  
-![Sign Up with Google](app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png)
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/signup.png" width="300" alt="Sign Up">
+
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png" width="300" alt="Sign Up with Google">
 
 ### Sign In Screen
 
-![Sign In](app/src/main/java/com/example/authapp/assets/screenshots/signin.png)  
-![Sign In with Google](app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png)
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/signin.png" width="300" alt="Sign In">
+
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png" width="300" alt="Sign In with Google">
 
 ### Forgot Password Screen
 
-![Forgot Password](app/src/main/java/com/example/authapp/assets/screenshots/forgotpassword.png)
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/forgotpassword.png" width="300" alt="Forgot Password">
 
 ### Home Screen
 
-![Forgot Password](app/src/main/java/com/example/authapp/assets/screenshots/home.png)
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/home.png" width="300" alt="Home">
 
 ### Card Validation Screen
 
-![Card Validation](app/src/main/java/com/example/authapp/assets/screenshots/validatecard.png)  
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/validatecard.png" width="300" alt="Card Validation">
+
 *Note: Card validation screen provides real-time feedback during input.*
 
 ---
@@ -70,8 +68,7 @@ implemented and undergoing testing.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Feel free to open issues or submit pull requests for improvements or
-suggestions.
+Contributions are welcome! Feel free to open issues or submit pull requests for improvements or suggestions.
 
 ## 📄 License
 
