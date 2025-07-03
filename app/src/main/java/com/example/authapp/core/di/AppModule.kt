@@ -10,11 +10,6 @@ import com.example.authapp.data.local.UserPreferencesDataStore
 import com.example.authapp.data.remote.FireBaseAuthDataSource
 import com.example.authapp.data.repository.auth.AuthRepository
 import com.example.authapp.data.repository.auth.AuthRepositoryImpl
-import com.example.authapp.data.repository.payment.PaymentRepository
-import com.example.authapp.data.repository.payment.PaymentRepositoryImpl
-import com.example.authapp.domain.usecase.payment.ValidateCardUseCase
-import com.example.authapp.presentation.viewmodel.cardvalidation.CardValidationViewModel
-import com.example.authapp.presentation.viewmodel.cardvalidation.payment.failure.PaymentFailureViewModel
 import com.example.authapp.presentation.viewmodel.home.HomeViewModel
 import com.example.authapp.presentation.viewmodel.signin.SignInViewModel
 import com.example.authapp.presentation.viewmodel.signin.resetpassword.ForgotPasswordViewModel
@@ -57,7 +52,6 @@ val appModule = module {
     single { UserPreferencesDataStore(get()) }
 
     // Use Cases
-    single { ValidateCardUseCase() }
 
     // Repositories
     single<AuthRepository> {
@@ -65,12 +59,6 @@ val appModule = module {
             googleSignInClient = get(),
             dataSource = get(),
             auth = get()
-        )
-    }
-
-    single<PaymentRepository> {
-        PaymentRepositoryImpl(
-            validateCardUseCase = get()
         )
     }
 
@@ -84,6 +72,4 @@ val appModule = module {
     viewModel { SignUpViewModel(get(), get()) }
     viewModel { HomeViewModel(get(), get()) }
     viewModel { ForgotPasswordViewModel(get()) }
-    viewModel { CardValidationViewModel(get(), get(), get()) }
-    viewModel { PaymentFailureViewModel(get()) }
 }
