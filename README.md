@@ -53,8 +53,6 @@ This project is actively under development. Core authentication and card validat
 
 ### Card Validation Screen
 
-<img src="app/src/main/java/com/example/authapp/assets/screenshots/validatecard.png" width="300" alt="Card Validation">
-
 *Note: Card validation screen provides real-time feedback during input.*
 
 ---
