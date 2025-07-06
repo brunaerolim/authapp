@@ -1,7 +1,6 @@
 package com.example.authapp.presentation.screen.signin
 
 import androidx.compose.runtime.State
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kotlinx.coroutines.flow.SharedFlow
 
 data class SignInFormState(
@@ -22,7 +21,7 @@ data class SignInFormState(
     val onRememberMeChanged: (Boolean) -> Unit,
     val onSignIn: () -> Unit,
     val onGoogleSignIn: () -> Unit,
-    val onGoogleSignInResult: (GoogleSignInAccount?) -> Unit,
+    val onGoogleSignInResult: (String?) -> Unit,
     val onNavigateToSignUp: () -> Unit,
     val onEmailFocusLost: () -> Unit,
     val onPasswordFocusLost: () -> Unit,

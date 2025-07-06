@@ -1,9 +1,7 @@
 package com.example.authapp.presentation.screen.signin
 
-import android.app.Activity
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -17,14 +15,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -34,7 +30,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,8 +43,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusChanged
@@ -69,12 +65,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.credentials.exceptions.NoCredentialException
 import com.example.authapp.R
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import kotlinx.coroutines.launch
+import java.security.MessageDigest
+import java.util.UUID
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SignInScreen(
     state: SignInFormState
@@ -83,22 +85,14 @@ fun SignInScreen(
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val interactionSource = remember { MutableInteractionSource() }
+    val coroutineScope = rememberCoroutineScope()
 
-    // Google Sign-In Launcher
-    val googleSignInLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        handleGoogleSignInResult(result, context, state)
-    }
-
-    // Google Sign-In Effect
     LaunchedEffect(Unit) {
         state.startGoogleSignIn.collect {
-            launchGoogleSignIn(context, googleSignInLauncher)
+            doGoogleSignIn(context, state, coroutineScope)
         }
     }
 
-    // Auto-hide keyboard when loading
     LaunchedEffect(state.isLoading.value) {
         if (state.isLoading.value) {
             keyboardController?.hide()
@@ -121,7 +115,7 @@ fun SignInScreen(
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp)
+                .padding(horizontal = 24.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             val (
@@ -131,10 +125,10 @@ fun SignInScreen(
                 googleButton, signUpRow, errorCard
             ) = createRefs()
 
-            // Logo
+            // App Logo
             AppLogo(
                 modifier = Modifier.constrainAs(logo) {
-                    top.linkTo(parent.top, margin = 16.dp)
+                    top.linkTo(parent.top, margin = 32.dp)
                     centerHorizontallyTo(parent)
                 }
             )
@@ -148,7 +142,7 @@ fun SignInScreen(
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.constrainAs(title) {
-                    top.linkTo(logo.bottom, margin = 16.dp)
+                    top.linkTo(logo.bottom, margin = 24.dp)
                     centerHorizontallyTo(parent)
                 }
             )
@@ -273,7 +267,7 @@ fun SignInScreen(
             )
 
             // Forgot Password Link
-            ClickableText(
+            Text(
                 text = AnnotatedString(stringResource(R.string.sign_in_forgot_password)),
                 style = TextStyle(
                     color = MaterialTheme.colorScheme.primary,
@@ -281,11 +275,14 @@ fun SignInScreen(
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center
                 ),
-                onClick = { state.onNavigateToForgotPassword() },
-                modifier = Modifier.constrainAs(forgotPasswordLink) {
-                    top.linkTo(signInButton.bottom, margin = 24.dp)
-                    centerHorizontallyTo(parent)
-                }
+                modifier = Modifier
+                    .clickable {
+                        state.onNavigateToForgotPassword()
+                    }
+                    .constrainAs(forgotPasswordLink) {
+                        top.linkTo(signInButton.bottom, margin = 24.dp)
+                        centerHorizontallyTo(parent)
+                    }
             )
 
             // Divider
@@ -325,7 +322,6 @@ fun SignInScreen(
                 }
             )
 
-            // Error Card
             if (state.errorMessage.value.isNotEmpty()) {
                 ErrorCard(
                     message = state.errorMessage.value,
@@ -334,6 +330,7 @@ fun SignInScreen(
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         width = Dimension.fillToConstraints
+                        bottom.linkTo(parent.bottom, margin = 24.dp)
                     }
                 )
             }
@@ -347,7 +344,7 @@ private fun AppLogo(modifier: Modifier = Modifier) {
         painter = painterResource(R.drawable.ic_launcher),
         contentDescription = null,
         tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-        modifier = modifier.size(40.dp)
+        modifier = modifier.size(48.dp)
     )
 }
 
@@ -380,14 +377,7 @@ private fun EmailField(
         singleLine = true,
         isError = isError,
         shape = RoundedCornerShape(12.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-            focusedLabelColor = MaterialTheme.colorScheme.primary,
-            cursorColor = MaterialTheme.colorScheme.primary,
-            errorBorderColor = MaterialTheme.colorScheme.error,
-            errorLabelColor = MaterialTheme.colorScheme.error
-        ),
+        colors = createTextFieldColors(),
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Email,
@@ -434,14 +424,7 @@ private fun PasswordField(
         singleLine = true,
         isError = isError,
         shape = RoundedCornerShape(12.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-            focusedLabelColor = MaterialTheme.colorScheme.primary,
-            cursorColor = MaterialTheme.colorScheme.primary,
-            errorBorderColor = MaterialTheme.colorScheme.error,
-            errorLabelColor = MaterialTheme.colorScheme.error
-        ),
+        colors = createTextFieldColors(),
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Lock,
@@ -541,7 +524,7 @@ private fun DividerWithText(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Divider(
+        HorizontalDivider(
             modifier = Modifier.weight(1f),
             color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
         )
@@ -550,7 +533,7 @@ private fun DividerWithText(
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
             style = MaterialTheme.typography.bodyMedium
         )
-        Divider(
+        HorizontalDivider(
             modifier = Modifier.weight(1f),
             color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
         )
@@ -578,7 +561,7 @@ private fun GoogleSignInButton(
             horizontalArrangement = Arrangement.Center
         ) {
             Icon(
-                imageVector = Icons.Default.Search, // Em um app real, use o ícone do Google
+                painter = painterResource(R.drawable.ic_google),
                 contentDescription = "Google Icon",
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(20.dp)
@@ -659,33 +642,82 @@ private fun ErrorCard(
     }
 }
 
-private fun handleGoogleSignInResult(
-    result: androidx.activity.result.ActivityResult,
-    context: android.content.Context,
-    state: SignInFormState
+@Composable
+private fun createTextFieldColors() = OutlinedTextFieldDefaults.colors(
+    focusedBorderColor = MaterialTheme.colorScheme.primary,
+    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+    focusedLabelColor = MaterialTheme.colorScheme.primary,
+    cursorColor = MaterialTheme.colorScheme.primary,
+    errorBorderColor = MaterialTheme.colorScheme.error,
+    errorLabelColor = MaterialTheme.colorScheme.error
+)
+
+private fun doGoogleSignIn(
+    context: Context,
+    state: SignInFormState,
+    coroutineScope: kotlinx.coroutines.CoroutineScope
 ) {
-    if (result.resultCode == Activity.RESULT_OK) {
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+    val credentialManager = CredentialManager.create(context)
+
+    val rawNonce = UUID.randomUUID().toString()
+    val bytes = rawNonce.toByteArray()
+    val md = MessageDigest.getInstance("SHA-256")
+    val digest = md.digest(bytes)
+    val hashedNonce = digest.fold("") { str, it ->
+        str + "%02x".format(it)
+    }
+
+    val googleSignInOption =
+        GetSignInWithGoogleOption.Builder(context.getString(R.string.default_web_client_id))
+            .setNonce(hashedNonce)
+            .build()
+
+    val request = GetCredentialRequest.Builder()
+        .addCredentialOption(googleSignInOption)
+        .build()
+
+    coroutineScope.launch {
         try {
-            val account = task.getResult(ApiException::class.java)
-            state.onGoogleSignInResult(account)
-        } catch (e: ApiException) {
-            Toast.makeText(context, "Google Sign-In failed: ${e.message}", Toast.LENGTH_LONG).show()
+            val result = credentialManager.getCredential(
+                request = request,
+                context = context
+            )
+            handleGoogleSignInResult(result, state)
+        } catch (e: NoCredentialException) {
+            Log.e("SignIn", "No credential available", e)
+            state.onGoogleSignInResult(null)
+        } catch (e: GetCredentialException) {
+            Log.e("SignIn", "Get credential exception", e)
             state.onGoogleSignInResult(null)
         }
-    } else {
-        state.onGoogleSignInResult(null)
     }
 }
 
-private fun launchGoogleSignIn(
-    context: android.content.Context,
-    launcher: androidx.activity.result.ActivityResultLauncher<android.content.Intent>
+private fun handleGoogleSignInResult(
+    result: GetCredentialResponse,
+    state: SignInFormState
 ) {
-    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(context.getString(R.string.default_web_client_id))
-        .requestEmail()
-        .build()
-    val googleSignInClient = GoogleSignIn.getClient(context, gso)
-    launcher.launch(googleSignInClient.signInIntent)
+    when (val credential = result.credential) {
+        is androidx.credentials.CustomCredential -> {
+            if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                try {
+                    val googleIdTokenCredential =
+                        GoogleIdTokenCredential.createFrom(credential.data)
+                    val idToken = googleIdTokenCredential.idToken
+                    state.onGoogleSignInResult(idToken)
+                } catch (e: Exception) {
+                    Log.e("SignIn", "Failed to get Google ID token", e)
+                    state.onGoogleSignInResult(null)
+                }
+            } else {
+                Log.e("SignIn", "Unexpected credential type")
+                state.onGoogleSignInResult(null)
+            }
+        }
+
+        else -> {
+            Log.e("SignIn", "Unexpected credential type")
+            state.onGoogleSignInResult(null)
+        }
+    }
 }

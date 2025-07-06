@@ -1,7 +1,7 @@
 package com.example.authapp.presentation.screen.signup
 
 import androidx.compose.runtime.State
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import androidx.credentials.GetCredentialResponse
 import kotlinx.coroutines.flow.SharedFlow
 
 data class SignUpFormState(
@@ -19,7 +19,7 @@ data class SignUpFormState(
     val isLoading: State<Boolean>,
     val errorToastMessage: State<String>,
     val signUpEnabled: State<Boolean>,
-    val startGoogleSignIn: SharedFlow<Unit>,
+    val startGoogleSignUp: SharedFlow<Unit>,
     val onNameChanged: (String) -> Unit,
     val onNameFocusChanged: (Boolean) -> Unit,
     val onEmailChanged: (String) -> Unit,
@@ -33,7 +33,8 @@ data class SignUpFormState(
     val onAcceptTermsChanged: (Boolean) -> Unit,
     val onSignUp: () -> Unit,
     val onGoogleSignUp: () -> Unit,
-    val onGoogleSignUpResult: (GoogleSignInAccount?) -> Unit,
+    val onGoogleSignUpResult: (GetCredentialResponse) -> Unit,
+    val onGoogleSignUpError: (String) -> Unit,
     val onNavigateToSignIn: () -> Unit,
     val dismissSnackbar: () -> Unit,
     val onNavigateBack: () -> Unit
