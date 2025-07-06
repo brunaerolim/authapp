@@ -173,7 +173,6 @@ class SignInViewModel(
         }
     }
 
-    // Novo método para lidar com o ID Token do Google
     fun handleGoogleSignInResult(idToken: String?) {
         viewModelScope.launch {
             supervisorScope {
