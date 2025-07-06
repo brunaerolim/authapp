@@ -1,5 +1,7 @@
 package com.example.authapp.presentation.screen.signup
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -42,10 +44,12 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -59,15 +63,34 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.credentials.exceptions.NoCredentialException
 import com.example.authapp.R
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import kotlinx.coroutines.launch
+import java.security.MessageDigest
+import java.util.UUID
 
 @Composable
 fun SignUpScreen(
     state: SignUpFormState,
 ) {
+    val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
+    val coroutineScope = rememberCoroutineScope()
+
+    // Handle Google Sign Up
+    LaunchedEffect(Unit) {
+        state.startGoogleSignUp.collect {
+            doGoogleSignUp(context, state, coroutineScope)
+        }
+    }
 
     LaunchedEffect(state.isLoading.value) {
         if (state.isLoading.value) {
@@ -352,6 +375,73 @@ fun SignUpScreen(
                     }
                 )
             }
+        }
+    }
+}
+
+private fun doGoogleSignUp(
+    context: Context,
+    state: SignUpFormState,
+    coroutineScope: kotlinx.coroutines.CoroutineScope
+) {
+    val credentialManager = CredentialManager.create(context)
+
+    val rawNonce = UUID.randomUUID().toString()
+    val bytes = rawNonce.toByteArray()
+    val md = MessageDigest.getInstance("SHA-256")
+    val digest = md.digest(bytes)
+    val hashedNonce = digest.fold("") { str, it ->
+        str + "%02x".format(it)
+    }
+
+    val googleSignInOption =
+        GetSignInWithGoogleOption.Builder(context.getString(R.string.default_web_client_id))
+            .setNonce(hashedNonce)
+            .build()
+
+    val request = GetCredentialRequest.Builder()
+        .addCredentialOption(googleSignInOption)
+        .build()
+
+    coroutineScope.launch {
+        try {
+            val result = credentialManager.getCredential(
+                request = request,
+                context = context
+            )
+            handleGoogleSignUpResult(result, state)
+        } catch (e: NoCredentialException) {
+            Log.e("SignUp", "No credential available", e)
+            state.onGoogleSignUpError("No Google account found")
+        } catch (e: GetCredentialException) {
+            Log.e("SignUp", "Get credential exception", e)
+            state.onGoogleSignUpError("Google Sign Up failed: ${e.message}")
+        }
+    }
+}
+
+private fun handleGoogleSignUpResult(
+    result: GetCredentialResponse,
+    state: SignUpFormState
+) {
+    when (val credential = result.credential) {
+        is androidx.credentials.CustomCredential -> {
+            if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                try {
+                    state.onGoogleSignUpResult(result)
+                } catch (e: Exception) {
+                    Log.e("SignUp", "Failed to get Google ID token", e)
+                    state.onGoogleSignUpError("Failed to process Google credentials")
+                }
+            } else {
+                Log.e("SignUp", "Unexpected credential type")
+                state.onGoogleSignUpError("Invalid credential type")
+            }
+        }
+
+        else -> {
+            Log.e("SignUp", "Unexpected credential type")
+            state.onGoogleSignUpError("Invalid credential")
         }
     }
 }

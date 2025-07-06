@@ -166,6 +166,7 @@ class SignUpViewModel(
 
         viewModelScope.launch {
             _showLoading.value = true
+            _errorToastMessage.value = ""
 
             when (val result = authRepository.signUp(
                 _email.value.trim(),
