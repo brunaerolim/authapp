@@ -14,9 +14,6 @@ import com.example.authapp.presentation.viewmodel.home.HomeViewModel
 import com.example.authapp.presentation.viewmodel.signin.SignInViewModel
 import com.example.authapp.presentation.viewmodel.signin.resetpassword.ForgotPasswordViewModel
 import com.example.authapp.presentation.viewmodel.signup.SignUpViewModel
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.stripe.android.Stripe
 import org.koin.android.ext.koin.androidContext
@@ -30,19 +27,7 @@ val appModule = module {
     // Firebase Auth
     single<FirebaseAuth> { FirebaseAuth.getInstance() }
 
-    // Google Sign-In
-    single<GoogleSignInOptions> {
-        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("your_web_client_id_here")
-            .requestEmail()
-            .build()
-    }
-
     single<ResourceProvider> { ResourceProviderImpl(androidContext()) }
-
-    single<GoogleSignInClient> {
-        GoogleSignIn.getClient(androidContext(), get())
-    }
 
     // DataStore
     single<DataStore<Preferences>> { androidContext().dataStore }
@@ -51,14 +36,11 @@ val appModule = module {
     single { FireBaseAuthDataSource(get()) }
     single { UserPreferencesDataStore(get()) }
 
-    // Use Cases
-
     // Repositories
     single<AuthRepository> {
         AuthRepositoryImpl(
-            googleSignInClient = get(),
-            dataSource = get(),
-            auth = get()
+            auth = get(),
+            dataSource = get()
         )
     }
 

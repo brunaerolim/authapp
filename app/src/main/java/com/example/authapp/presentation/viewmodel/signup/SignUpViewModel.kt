@@ -1,14 +1,12 @@
 package com.example.authapp.presentation.viewmodel.signup
 
 import android.util.Patterns
+import androidx.credentials.GetCredentialResponse
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.authapp.core.utils.Resource
 import com.example.authapp.data.local.UserPreferencesDataStore
 import com.example.authapp.data.repository.auth.AuthRepository
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -19,7 +17,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
 
 class SignUpViewModel(
     private val authRepository: AuthRepository,
@@ -67,16 +64,16 @@ class SignUpViewModel(
 
     private val _acceptTerms = MutableStateFlow(false)
     val acceptTerms: StateFlow<Boolean> = _acceptTerms.asStateFlow()
-    private val _startGoogleSignIn = MutableSharedFlow<Unit>()
+
+    private val _startGoogleSignUp = MutableSharedFlow<Unit>()
+    val startGoogleSignUp: SharedFlow<Unit> = _startGoogleSignUp.asSharedFlow()
 
     private val _navigateToBack = MutableSharedFlow<Unit>()
     val navigateToBack: SharedFlow<Unit> = _navigateToBack.asSharedFlow()
 
-    val startGoogleSignIn: SharedFlow<Unit> = _startGoogleSignIn.asSharedFlow()
-
     fun onGoogleSignUp() {
         viewModelScope.launch {
-            _startGoogleSignIn.emit(Unit)
+            _startGoogleSignUp.emit(Unit)
         }
     }
 
@@ -200,75 +197,44 @@ class SignUpViewModel(
         }
     }
 
-    fun signUpWithGoogle(credential: AuthCredential) {
+    fun handleGoogleSignUpResult(credentialResponse: GetCredentialResponse) {
         viewModelScope.launch {
             _showLoading.value = true
+            _errorToastMessage.value = ""
 
-            when (val result = authRepository.signInWithGoogle(credential)) {
-                is Resource.Success -> {
-                    val user = result.data
-                    userPreferencesDataStore.saveUserData(
-                        userId = user.id,
-                        userName = user.name ?: "",
-                        userEmail = user.email ?: "",
-                        userPhotoUrl = user.photoUrl
-                    )
-                    _signUpSuccess.emit(Unit)
-                }
+            try {
+                when (val result = authRepository.signInWithGoogle(credentialResponse)) {
+                    is Resource.Success -> {
+                        val user = result.data
+                        userPreferencesDataStore.saveUserData(
+                            userId = user.id,
+                            userName = user.name ?: "",
+                            userEmail = user.email ?: "",
+                            userPhotoUrl = user.photoUrl
+                        )
+                        _signUpSuccess.emit(Unit)
+                    }
 
-                is Resource.Failure -> {
-                    _errorToastMessage.value = result.throwable.message ?: "Google sign up failed"
-                }
+                    is Resource.Failure -> {
+                        _errorToastMessage.value =
+                            result.throwable.message ?: "Google sign up failed"
+                    }
 
-                is Resource.Loading -> { /* handled by showLoading */
+                    is Resource.Loading -> { /* handled by showLoading */
+                    }
                 }
+            } catch (e: Exception) {
+                _errorToastMessage.value = "Google sign up failed: ${e.message}"
+            } finally {
+                _showLoading.value = false
             }
-
-            _showLoading.value = false
         }
     }
 
-
-    fun handleGoogleSignUpResult(account: GoogleSignInAccount?) {
+    fun handleGoogleSignUpError(errorMessage: String) {
         viewModelScope.launch {
-            supervisorScope {
-                _showLoading.value = true
-                _errorToastMessage.value = ""
-
-                try {
-                    if (account == null) {
-                        _errorToastMessage.value = "Google sign up was cancelled"
-                        return@supervisorScope
-                    }
-
-                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-
-                    when (val result = authRepository.signInWithGoogle(credential)) {
-                        is Resource.Success -> {
-                            val user = result.data
-                            userPreferencesDataStore.saveUserData(
-                                userId = user.id,
-                                userName = user.name ?: "",
-                                userEmail = user.email ?: "",
-                                userPhotoUrl = user.photoUrl
-                            )
-                            _signUpSuccess.emit(Unit)
-                        }
-
-                        is Resource.Failure -> {
-                            _errorToastMessage.value =
-                                result.throwable.message ?: "Google sign up failed"
-                        }
-
-                        is Resource.Loading -> { /* handled by isLoading */
-                        }
-                    }
-                } catch (e: Exception) {
-                    _errorToastMessage.value = "Google sign up failed: ${e.message}"
-                } finally {
-                    _showLoading.value = false
-                }
-            }
+            _errorToastMessage.value = errorMessage
+            _showLoading.value = false
         }
     }
 }

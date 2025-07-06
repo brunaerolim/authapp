@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +7,15 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
 }
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
+val webClientId: String = localProperties.getProperty("WEB_CLIENT_ID")
+   ?: System.getenv("WEB_CLIENT_ID")
 
 android {
     namespace = "com.example.authapp"
@@ -21,12 +32,16 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "WEB_CLIENT_ID", "\"$webClientId\"")
     }
 
     buildTypes {
         debug {
             isDebuggable = true
             versionNameSuffix = "-debug"
+            // Para debug, pode adicionar logs extras se necessário
+            buildConfigField("boolean", "DEBUG_MODE", "true")
         }
 
         release {
@@ -36,6 +51,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("boolean", "DEBUG_MODE", "false")
         }
     }
 
@@ -91,7 +107,14 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
-    implementation(libs.play.services.auth)
+
+    // REMOVER esta linha deprecated:
+    // implementation(libs.play.services.auth)
+
+    // ADICIONAR Credential Manager (moderno):
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
     // Koin - Dependency Injection
     implementation(libs.koin.android)

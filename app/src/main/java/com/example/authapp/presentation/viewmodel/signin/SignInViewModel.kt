@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.authapp.core.utils.Resource
 import com.example.authapp.data.local.UserPreferencesDataStore
 import com.example.authapp.data.repository.auth.AuthRepository
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -158,8 +156,7 @@ class SignInViewModel(
                             _errorMessage.value = result.throwable.message ?: "Sign in failed"
                         }
 
-                        is Resource.Loading -> { /* handled by isLoading */
-                        }
+                        is Resource.Loading -> { /* handled by isLoading */ }
                     }
                 } catch (e: Exception) {
                     _errorMessage.value = "Sign in failed: ${e.message}"
@@ -176,21 +173,20 @@ class SignInViewModel(
         }
     }
 
-    fun handleGoogleSignInResult(account: GoogleSignInAccount?) {
+    // Novo método para lidar com o ID Token do Google
+    fun handleGoogleSignInResult(idToken: String?) {
         viewModelScope.launch {
             supervisorScope {
                 _isLoading.value = true
                 _errorMessage.value = ""
 
                 try {
-                    if (account == null) {
+                    if (idToken == null) {
                         _errorMessage.value = "Google sign in was cancelled"
                         return@supervisorScope
                     }
 
-                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-
-                    when (val result = authRepository.signInWithGoogle(credential)) {
+                    when (val result = authRepository.signInWithGoogleIdToken(idToken)) {
                         is Resource.Success -> {
                             val user = result.data
                             userPreferencesDataStore.saveUserData(
@@ -207,8 +203,7 @@ class SignInViewModel(
                                 result.throwable.message ?: "Google sign in failed"
                         }
 
-                        is Resource.Loading -> { /* handled by isLoading */
-                        }
+                        is Resource.Loading -> { /* handled by isLoading */ }
                     }
                 } catch (e: Exception) {
                     _errorMessage.value = "Google sign in failed: ${e.message}"
@@ -264,5 +259,4 @@ class SignInViewModel(
     private fun isValidPassword(password: String): Boolean {
         return password.length >= 6
     }
-
 }

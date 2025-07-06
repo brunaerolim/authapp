@@ -24,7 +24,7 @@ fun SignUpViewModel.toScreenState(
         isLoading = showLoading.collectAsState(),
         errorToastMessage = errorToastMessage.collectAsState(),
         signUpEnabled = signUpEnabled.collectAsState(),
-        startGoogleSignIn = startGoogleSignIn,
+        startGoogleSignUp = startGoogleSignUp,
         onNameChanged = ::onNameChanged,
         onNameFocusChanged = ::onNameFocusLost,
         onEmailChanged = ::onEmailChanged,
@@ -39,6 +39,7 @@ fun SignUpViewModel.toScreenState(
         onSignUp = ::signUp,
         onGoogleSignUp = ::onGoogleSignUp,
         onGoogleSignUpResult = ::handleGoogleSignUpResult,
+        onGoogleSignUpError = ::handleGoogleSignUpError,
         onNavigateToSignIn = onNavigateToSignIn,
         dismissSnackbar = ::dismissSnackbar,
         onNavigateBack = onNavigateBack

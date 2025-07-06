@@ -17,7 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ButtonDefaults
@@ -40,6 +39,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -273,7 +273,7 @@ fun GoogleSignUpButton(
             horizontalArrangement = Arrangement.Center
         ) {
             Icon(
-                imageVector = Icons.Default.Search, // Troque pelo ícone oficial do Google se tiver
+                painter = painterResource(R.drawable.ic_google),
                 contentDescription = stringResource(R.string.google_signup_button),
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(20.dp)
