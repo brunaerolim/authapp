@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Authapp"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -33,5 +34,18 @@
                     android:pathPrefix="/resetPassword" />
             </intent-filter>
         </activity>
+
+        <!-- Sentry Configuration -->
+        <meta-data android:name="io.sentry.dsn" android:value="${SENTRY_KEY}" />
+        <meta-data android:name="io.sentry.send-default-pii" android:value="true" />
+        <meta-data android:name="io.sentry.traces.user-interaction.enable" android:value="true" />
+        <meta-data android:name="io.sentry.attach-screenshot" android:value="true" />
+        <meta-data android:name="io.sentry.attach-view-hierarchy" android:value="true" />
+        <meta-data android:name="io.sentry.traces.sample-rate" android:value="1.0" />
+        <meta-data android:name="io.sentry.traces.profiling.session-sample-rate" android:value="1.0" />
+        <meta-data android:name="io.sentry.traces.profiling.lifecycle" android:value="trace" />
+        <meta-data android:name="io.sentry.traces.profiling.start-on-app-start" android:value="true" />
+        <meta-data android:name="io.sentry.session-replay.on-error-sample-rate" android:value="1.0" />
+        <meta-data android:name="io.sentry.session-replay.session-sample-rate" android:value="0.1" />
     </application>
 </manifest>

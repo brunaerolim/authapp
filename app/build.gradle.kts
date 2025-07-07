@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.sentry)
 }
 
 val localProperties = Properties()
@@ -17,6 +18,8 @@ if (localPropertiesFile.exists()) {
 val webClientId: String = localProperties.getProperty("WEB_CLIENT_ID")
    ?: System.getenv("WEB_CLIENT_ID")
 
+val sentryKey: String = localProperties.getProperty("SENTRY_KEY")
+    ?: System.getenv("SENTRY_KEY")
 android {
     namespace = "com.example.authapp"
     compileSdk = 35
@@ -34,6 +37,9 @@ android {
         }
 
         buildConfigField("String", "WEB_CLIENT_ID", "\"$webClientId\"")
+        buildConfigField("String", "SENTRY_KEY", "\"$sentryKey\"")
+
+        manifestPlaceholders["SENTRY_KEY"] = sentryKey
     }
 
     buildTypes {
@@ -143,6 +149,12 @@ dependencies {
 
     // Stripe
     implementation(libs.stripe.android)
+
+    //Sentry
+    implementation(libs.sentry.android)
+    implementation(libs.sentry.compose)
+    implementation(libs.sentry.android.navigation)
+    implementation(libs.sentry.android.replay)
 
     // Testing
     testImplementation(libs.junit)
