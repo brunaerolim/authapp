@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.authapp.presentation.screen.home.HomeScreen
 import com.example.authapp.presentation.screen.signin.SignInScreen
@@ -17,11 +18,19 @@ import com.example.authapp.presentation.viewmodel.signin.resetpassword.toForgotS
 import com.example.authapp.presentation.viewmodel.signin.toScreenState
 import com.example.authapp.presentation.viewmodel.signup.SignUpViewModel
 import com.example.authapp.presentation.viewmodel.signup.toScreenState
+import io.sentry.Sentry
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AuthNavGraph() {
     val navController = rememberNavController()
+    val navBackStackEntry = navController.currentBackStackEntryAsState()
+
+    LaunchedEffect(navBackStackEntry.value?.destination?.route) {
+        navBackStackEntry.value?.destination?.route?.let { route ->
+            Sentry.addBreadcrumb("Navigated to $route")
+        }
+    }
 
     NavHost(
         navController = navController,
