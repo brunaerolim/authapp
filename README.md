@@ -13,6 +13,7 @@ This mobile application combines user authentication and payment card validation
 - **Google Sign-In**
 - **Custom Payment Card Validation**
 - **Password Reset** (via Firebase Hosting)
+- **Sentry** – real-time error monitoring and performance tracking
 
 ## 🚧 Project Status
 
@@ -24,6 +25,8 @@ This project is actively under development. Core authentication and card validat
 - Firebase Authentication and Google Sign-In integration
 - Real-time payment card validation with user feedback
 - Navigation between screens using Jetpack Compose Navigation
+- Sentry Integration: The app now features robust error and performance monitoring with Sentry. All crashes, exceptions, and ANRs are automatically captured, helping ensure reliability and fast issue resolution.
+- Navigation Tracking in Jetpack Compose: While Sentry’s navigation tracking is automatic for traditional navigation, in Jetpack Compose we’ve implemented custom breadcrumbs to track user navigation between screens. This provides valuable context for debugging and user flow analysis.
 
 ### Features In Progress
 
