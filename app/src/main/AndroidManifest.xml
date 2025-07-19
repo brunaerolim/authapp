@@ -2,6 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+
     <application
         android:name=".AuthApp"
         android:allowBackup="true"
@@ -26,26 +40,50 @@
             <!-- Deep Link configuration -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                    android:scheme="https"
                     android:host="authapp-6605e.web.app"
-                    android:pathPrefix="/resetPassword" />
+                    android:pathPrefix="/resetPassword"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
 
         <!-- Sentry Configuration -->
-        <meta-data android:name="io.sentry.dsn" android:value="${SENTRY_KEY}" />
-        <meta-data android:name="io.sentry.send-default-pii" android:value="true" />
-        <meta-data android:name="io.sentry.traces.user-interaction.enable" android:value="true" />
-        <meta-data android:name="io.sentry.attach-screenshot" android:value="true" />
-        <meta-data android:name="io.sentry.attach-view-hierarchy" android:value="true" />
-        <meta-data android:name="io.sentry.traces.sample-rate" android:value="1.0" />
-        <meta-data android:name="io.sentry.traces.profiling.session-sample-rate" android:value="1.0" />
-        <meta-data android:name="io.sentry.traces.profiling.lifecycle" android:value="trace" />
-        <meta-data android:name="io.sentry.traces.profiling.start-on-app-start" android:value="true" />
-        <meta-data android:name="io.sentry.session-replay.on-error-sample-rate" android:value="1.0" />
-        <meta-data android:name="io.sentry.session-replay.session-sample-rate" android:value="0.1" />
+        <meta-data
+            android:name="io.sentry.dsn"
+            android:value="${SENTRY_KEY}" />
+        <meta-data
+            android:name="io.sentry.send-default-pii"
+            android:value="true" />
+        <meta-data
+            android:name="io.sentry.traces.user-interaction.enable"
+            android:value="true" />
+        <meta-data
+            android:name="io.sentry.attach-screenshot"
+            android:value="true" />
+        <meta-data
+            android:name="io.sentry.attach-view-hierarchy"
+            android:value="true" />
+        <meta-data
+            android:name="io.sentry.traces.sample-rate"
+            android:value="1.0" />
+        <meta-data
+            android:name="io.sentry.traces.profiling.session-sample-rate"
+            android:value="1.0" />
+        <meta-data
+            android:name="io.sentry.traces.profiling.lifecycle"
+            android:value="trace" />
+        <meta-data
+            android:name="io.sentry.traces.profiling.start-on-app-start"
+            android:value="true" />
+        <meta-data
+            android:name="io.sentry.session-replay.on-error-sample-rate"
+            android:value="1.0" />
+        <meta-data
+            android:name="io.sentry.session-replay.session-sample-rate"
+            android:value="0.1" />
     </application>
 </manifest>

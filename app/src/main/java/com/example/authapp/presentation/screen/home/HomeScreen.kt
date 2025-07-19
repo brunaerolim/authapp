@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CreditCard
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.TransitEnterexit
 import androidx.compose.material3.AlertDialog
@@ -28,6 +27,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -43,27 +43,34 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.authapp.data.local.UserPreferences
 import com.example.authapp.domain.model.User
-import com.example.authapp.presentation.theme.PastelPink
 import com.example.authapp.presentation.theme.PastelPinkDark
+import com.example.authapp.presentation.theme.PastelSurface
+import com.example.authapp.presentation.theme.Pink40
 
 @Composable
 fun HomeScreen(
-    state: HomeScreenState
+    state: HomeScreenState,
 ) {
-    HomeContent(
-        currentUser = state.currentUser.value,
-        userPreferences = state.userPreferences.value,
-        isLoading = state.isLoading.value,
-        showSignOutDialog = state.showSignOutDialog.value,
-        onSignOut = {
-            state.onSignOut()
-            state.onNavigateToSignOut()
-        },
-        onShowSignOutDialog = state.onShowSignOutDialog,
-        onHideSignOutDialog = state.onHideSignOutDialog,
-        onRefreshUserData = state.onRefreshUserData,
-        onNavigateToCardValidation = state.onNavigateToCardValidation
-    )
+    Surface(
+        modifier = Modifier
+            .fillMaxSize(),
+        color = PastelSurface
+    ) {
+        HomeContent(
+            currentUser = state.currentUser.value,
+            userPreferences = state.userPreferences.value,
+            isLoading = state.isLoading.value,
+            showSignOutDialog = state.showSignOutDialog.value,
+            onSignOut = {
+                state.onSignOut()
+                state.onNavigateToSignOut()
+            },
+            onShowSignOutDialog = state.onShowSignOutDialog,
+            onHideSignOutDialog = state.onHideSignOutDialog,
+            onRefreshUserData = state.onRefreshUserData,
+            onNavigateToCardValidation = state.onNavigateToCardValidation
+        )
+    }
 }
 
 @Composable
@@ -83,7 +90,7 @@ fun HomeContent(
         contentAlignment = Alignment.Center
     ) {
         if (isLoading) {
-            CircularProgressIndicator(color = PastelPink)
+            CircularProgressIndicator(color = Pink40)
         } else {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -112,7 +119,7 @@ fun HomeContent(
                             modifier = Modifier
                                 .size(120.dp)
                                 .clip(CircleShape)
-                                .border(3.dp, PastelPink, CircleShape),
+                                .border(3.dp, Pink40, CircleShape),
                             contentScale = ContentScale.Crop
                         )
 
@@ -121,7 +128,7 @@ fun HomeContent(
                         Text(
                             text = "Welcome back!",
                             style = MaterialTheme.typography.headlineMedium.copy(
-                                color = PastelPinkDark,
+                                color = Pink40,
                                 fontWeight = FontWeight.Bold
                             ),
                             modifier = Modifier.padding(bottom = 8.dp)
@@ -130,7 +137,7 @@ fun HomeContent(
                         Text(
                             text = currentUser?.name ?: userPreferences.userName,
                             style = MaterialTheme.typography.headlineSmall.copy(
-                                color = PastelPink,
+                                color = Pink40,
                                 fontWeight = FontWeight.Medium
                             ),
                             modifier = Modifier.padding(bottom = 4.dp)
@@ -139,7 +146,7 @@ fun HomeContent(
                         Text(
                             text = currentUser?.email ?: userPreferences.userEmail,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = PastelPinkDark.copy(alpha = 0.7f),
+                            color = Pink40.copy(alpha = 0.7f),
                             modifier = Modifier.padding(bottom = 32.dp)
                         )
 
@@ -148,7 +155,7 @@ fun HomeContent(
                             onClick = onNavigateToCardValidation,
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = PastelPink,
+                                containerColor = Pink40,
                                 contentColor = Color.White
                             ),
                             shape = RoundedCornerShape(12.dp)
@@ -172,7 +179,7 @@ fun HomeContent(
                                 onClick = onRefreshUserData,
                                 modifier = Modifier.weight(1f),
                                 colors = ButtonDefaults.outlinedButtonColors(
-                                    contentColor = PastelPink
+                                    contentColor = Pink40
                                 ),
                                 shape = RoundedCornerShape(12.dp)
                             ) {
@@ -189,7 +196,7 @@ fun HomeContent(
                                 onClick = onShowSignOutDialog,
                                 modifier = Modifier.weight(1f),
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = PastelPink,
+                                    containerColor = Pink40,
                                     contentColor = Color.White
                                 ),
                                 shape = RoundedCornerShape(12.dp)
@@ -215,7 +222,7 @@ fun HomeContent(
                 title = {
                     Text(
                         text = "Sign Out",
-                        color = PastelPinkDark,
+                        color = Pink40,
                         fontWeight = FontWeight.Bold
                     )
                 },
@@ -229,7 +236,7 @@ fun HomeContent(
                     Button(
                         onClick = onSignOut,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = PastelPink,
+                            containerColor = Pink40,
                             contentColor = Color.White
                         )
                     ) {
@@ -240,7 +247,7 @@ fun HomeContent(
                     TextButton(
                         onClick = onHideSignOutDialog,
                         colors = ButtonDefaults.textButtonColors(
-                            contentColor = PastelPinkDark
+                            contentColor = Pink40
                         )
                     ) {
                         Text("Cancel")

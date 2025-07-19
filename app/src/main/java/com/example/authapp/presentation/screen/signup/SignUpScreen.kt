@@ -69,6 +69,9 @@ import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.credentials.exceptions.NoCredentialException
 import com.example.authapp.R
+import com.example.authapp.presentation.theme.PastelSurface
+import com.example.authapp.presentation.theme.Pink40
+import com.example.authapp.presentation.theme.PurpleGrey40
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.launch
@@ -109,12 +112,12 @@ fun SignUpScreen(
                 keyboardController?.hide()
                 focusManager.clearFocus()
             },
-        color = MaterialTheme.colorScheme.surface
+        color = PastelSurface
     ) {
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 36.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             val (
@@ -139,7 +142,7 @@ fun SignUpScreen(
                 text = stringResource(R.string.create_account_title),
                 style = MaterialTheme.typography.headlineMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
+                    color = Pink40
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.constrainAs(title) {
@@ -152,7 +155,7 @@ fun SignUpScreen(
             Text(
                 text = stringResource(R.string.create_account_subtitle),
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    color = Pink40.copy(alpha = 0.7f)
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.constrainAs(subtitle) {
@@ -361,20 +364,6 @@ fun SignUpScreen(
                     centerHorizontallyTo(parent)
                 }
             )
-
-            // Error Card
-            if (state.errorToastMessage.value.isNotEmpty()) {
-                ErrorCard(
-                    message = state.errorToastMessage.value,
-                    modifier = Modifier.constrainAs(errorCard) {
-                        top.linkTo(signInRow.bottom, margin = 24.dp)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        width = Dimension.fillToConstraints
-                        bottom.linkTo(parent.bottom, margin = 24.dp)
-                    }
-                )
-            }
         }
     }
 }
@@ -451,7 +440,7 @@ private fun AppLogo(modifier: Modifier = Modifier) {
     Icon(
         painter = painterResource(R.drawable.ic_launcher),
         contentDescription = null,
-        tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+        tint = Pink40.copy(alpha = 0.7f),
         modifier = modifier.size(48.dp)
     )
 }
@@ -490,7 +479,7 @@ private fun NameField(
             Icon(
                 imageVector = Icons.Default.Person,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
+                tint = Pink40
             )
         }
     )
@@ -530,7 +519,7 @@ private fun EmailField(
             Icon(
                 imageVector = Icons.Default.Email,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
+                tint = Pink40
             )
         }
     )
@@ -582,7 +571,7 @@ private fun PasswordField(
             Icon(
                 imageVector = Icons.Default.Lock,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
+                tint = Pink40
             )
         },
         trailingIcon = {
@@ -596,7 +585,7 @@ private fun PasswordField(
                     contentDescription = if (isVisible) stringResource(R.string.hide_password) else stringResource(
                         R.string.show_password
                     ),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = Pink40
                 )
             }
         }
@@ -617,8 +606,8 @@ private fun TermsRow(
             checked = isChecked,
             onCheckedChange = onCheckedChange,
             colors = CheckboxDefaults.colors(
-                checkedColor = MaterialTheme.colorScheme.primary,
-                uncheckedColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
+                checkedColor = Pink40,
+                uncheckedColor = Pink40.copy(alpha = 0.6f),
                 checkmarkColor = MaterialTheme.colorScheme.onPrimary
             )
         )
@@ -644,9 +633,9 @@ private fun PrimaryButton(
         modifier = modifier.height(56.dp),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+            containerColor = Pink40,
+            contentColor = Pink40,
+            disabledContainerColor = Pink40.copy(alpha = 0.5f)
         ),
         shape = RoundedCornerShape(12.dp),
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
@@ -704,9 +693,9 @@ private fun GoogleSignUpButton(
         modifier = modifier.height(56.dp),
         enabled = enabled,
         colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = MaterialTheme.colorScheme.primary
+            contentColor = Pink40
         ),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+        border = BorderStroke(1.dp, Pink40),
         shape = RoundedCornerShape(12.dp)
     ) {
         Row(
@@ -716,7 +705,7 @@ private fun GoogleSignUpButton(
             Icon(
                 painter = painterResource(R.drawable.ic_google),
                 contentDescription = "Google Icon",
-                tint = MaterialTheme.colorScheme.primary,
+                tint = Pink40,
                 modifier = Modifier.size(20.dp)
             )
             Spacer(modifier = Modifier.width(12.dp))
@@ -752,7 +741,7 @@ private fun SignInRow(
         ) {
             Text(
                 text = stringResource(R.string.sign_in_link),
-                color = MaterialTheme.colorScheme.primary,
+                color = Pink40,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Bold
                 )
@@ -797,10 +786,10 @@ private fun ErrorCard(
 
 @Composable
 private fun createTextFieldColors() = OutlinedTextFieldDefaults.colors(
-    focusedBorderColor = MaterialTheme.colorScheme.primary,
-    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-    focusedLabelColor = MaterialTheme.colorScheme.primary,
-    cursorColor = MaterialTheme.colorScheme.primary,
+    focusedBorderColor = Pink40,
+    unfocusedBorderColor = PurpleGrey40,
+    focusedLabelColor = Pink40,
+    cursorColor = Pink40,
     errorBorderColor = MaterialTheme.colorScheme.error,
     errorLabelColor = MaterialTheme.colorScheme.error
 )

@@ -2,6 +2,7 @@ package com.example.authapp
 
 import android.app.Application
 import com.example.authapp.core.di.appModule
+import com.example.authapp.core.di.networkModule
 import io.sentry.SentryLevel
 import io.sentry.android.core.SentryAndroid
 import org.koin.android.ext.koin.androidContext
@@ -19,7 +20,10 @@ class AuthApp : Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@AuthApp)
-            modules(appModule)
+            modules(
+                networkModule,
+                appModule
+            )
         }
     }
 

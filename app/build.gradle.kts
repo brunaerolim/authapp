@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
     alias(libs.plugins.sentry)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 val localProperties = Properties()
@@ -20,6 +21,9 @@ val webClientId: String = localProperties.getProperty("WEB_CLIENT_ID")
 
 val sentryKey: String = localProperties.getProperty("SENTRY_KEY")
     ?: System.getenv("SENTRY_KEY")
+
+val stripeKey: String = localProperties.getProperty("STRIPE_KEY")
+
 android {
     namespace = "com.example.authapp"
     compileSdk = 35
@@ -38,6 +42,7 @@ android {
 
         buildConfigField("String", "WEB_CLIENT_ID", "\"$webClientId\"")
         buildConfigField("String", "SENTRY_KEY", "\"$sentryKey\"")
+        buildConfigField("String", "STRIPE_PUBLISHABLE_KEY", "\"$stripeKey\"")
 
         manifestPlaceholders["SENTRY_KEY"] = sentryKey
     }
@@ -46,7 +51,6 @@ android {
         debug {
             isDebuggable = true
             versionNameSuffix = "-debug"
-            // Para debug, pode adicionar logs extras se necessário
             buildConfigField("boolean", "DEBUG_MODE", "true")
         }
 
@@ -130,6 +134,8 @@ dependencies {
     // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.tv.material)
+    implementation(libs.androidx.constraintlayout.core)
     ksp(libs.androidx.room.compiler)
 
     // Coroutines

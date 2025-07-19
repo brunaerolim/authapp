@@ -50,52 +50,43 @@
     <string name="sign_in_hide_password">Hide password</string>
     <string name="sign_in_google_sign_in_failed">Google Sign-In failed: %s</string>
 
-    <!-- Card Validation -->
-    <string name="card_validation_title">Card Validation</string>
-    <string name="card_validation_subtitle">Enter your card details for validation</string>
-    <string name="card_number">Card Number</string>
-    <string name="expiry_date">Expiry Date</string>
-    <string name="cvc">CVC</string>
-    <string name="card_holder_name">Cardholder Name</string>
-    <string name="validate_card">Validate Card</string>
-    <string name="security_info_title">🔒 Security Information</string>
-    <string name="security_info_description">Your data is protected with end-to-end encryption. We use Stripe to ensure maximum security.</string>
-    <string name="error_prefix">Error:</string>
-    <string name="card_number_description">Please enter a valid card number</string>
-    <string name="expiry_date_description">Please enter a valid expiry date</string>
-    <string name="cvc_description">Please enter a valid CVC</string>
-    <string name="card_holder_name_description">Please enter a valid cardholder name</string>
-    <string name="card_icon_description">Card Icon</string>
-    <string name="expiry_date_error">Please enter a valid expiry date</string>
-    <string name="cvc_error">Please enter a valid CVC</string>
-    <string name="card_holder_name_error">Please enter a valid cardholder name</string>
-    <string name="card_number_error">Please enter a valid card number</string>
-    <string name="validation_error">Validation failed</string>
-    <string name="card_holder_name_placeholder">Cardholder Name</string>
-    <string name="validating_card">Validating Card</string>
-    <string name="validating_card_message">Please wait while we validate your card</string>
-    <!-- Payment Success Strings -->
-    <string name="payment_success_title">Your payment was successful</string>
-    <string name="payment_success_message">Your payment has been processed successfully.</string>
-    <string name="payment_success_icon_description">Success Icon Description</string>
-    <string name="continue_to_home">Continue</string>
-    <string name="validate_another_card">Validate another card</string>
-
-    <!-- Payment Failure Strings -->
-    <string name="payment_failure_title">Payment failed</string>
-    <string name="payment_generic_error">An error occurred while processing your payment. Please try again.</string>
-    <string name="try_again">Try Again</string>
-    <string name="back_to_home">Back to Home</string>
-
-    <!-- Payment failure messages -->
-    <string name="error_card_declined">Your card was declined. Please use a different card.</string>
-    <string name="error_invalid_number">Invalid card number.</string>
-    <string name="error_expired_card">Your card has expired.</string>
-    <string name="error_incorrect_cvc">Incorrect CVC code.</string>
-    <string name="error_generic_payment">Payment processing error. Please try again.</string>
-
     <!-- Accessibility Labels -->
     <string name="payment_result_screen">Payment Result Screen</string>
     <string name="main_action_button">Main Action Button</string>
     <string name="secondary_action_button">Secondary Action Button</string>
+
+    <!-- Payment Screen -->
+    <string name="payment_screen_title">Secure Payment</string>
+    <string name="payment_screen_subtitle">Enter payment details below</string>
+    <string name="payment_amount_label">Amount (USD)</string>
+    <string name="payment_amount_required_error">Amount is required</string>
+    <string name="payment_amount_invalid_error">Please enter a valid amount</string>
+    <string name="payment_description_label">Description (Optional)</string>
+    <string name="payment_prepare_button">Prepare Payment</string>
+    <string name="payment_ready_to_pay_title">Ready to Pay</string>
+    <string name="payment_amount_summary">Amount:</string>
+    <string name="payment_description_summary">Description:</string>
+    <string name="payment_pay_now_button">Pay Now</string>
+    <string name="payment_successful_message">Payment Successful!</string>
+    <string name="payment_canceled_message">Payment Canceled</string>
+    <string name="payment_status_label">Status: %s</string>
+    <string name="payment_new_payment_button">New Payment</string>
+    <string name="payment_error_creating_intent">Error creating payment: %s</string>
+    <string name="payment_failed_message">Payment failed</string>
+    <string name="payment_error_message_default">Error processing payment</string>
+    <string name="payment_back_button_description">Back</string>
+
+    <string name="payment_success_screen_title">Payment</string>
+    <string name="payment_success_congratulations">Congratulations!</string>
+    <string name="payment_success_message">Your payment was completed successfully.</string>
+    <string name="payment_success_amount_label">Amount paid</string>
+    <string name="payment_success_transaction_id_label">Transaction ID</string>
+    <string name="payment_success_date_label">Date</string>
+    <string name="payment_success_method_label">Payment method</string>
+    <string name="payment_success_receipt_button">View receipt</string>
+    <string name="payment_success_share_button">Share</string>
+    <string name="payment_success_download_button">Download</string>
+    <string name="payment_success_continue_button">Back to home</string>
+    <string name="payment_success_new_payment_button">Make another payment</string>
+    <string name="payment_success_checkmark_description">Success checkmark</string>
 </resources>

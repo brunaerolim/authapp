@@ -1,5 +1,7 @@
 package com.example.authapp.core.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
@@ -21,6 +23,7 @@ import com.example.authapp.presentation.viewmodel.signup.toScreenState
 import io.sentry.Sentry
 import org.koin.androidx.compose.koinViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AuthNavGraph() {
     val navController = rememberNavController()
@@ -97,7 +100,7 @@ fun AuthNavGraph() {
                         }
                     },
                     onNavigateToCardValidation = {
-                        navController.navigate(Destinations.CARD_VALIDATION)
+                        navController.navigate(Destinations.PAYMENT)
                     }
                 )
             )
@@ -116,7 +119,6 @@ fun AuthNavGraph() {
 
             ForgotPasswordScreen(state = state)
         }
-
     }
 
 }

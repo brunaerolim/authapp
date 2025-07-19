@@ -15,7 +15,8 @@ import com.example.authapp.presentation.viewmodel.signin.SignInViewModel
 import com.example.authapp.presentation.viewmodel.signin.resetpassword.ForgotPasswordViewModel
 import com.example.authapp.presentation.viewmodel.signup.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.stripe.android.Stripe
+import com.stripe.android.PaymentConfiguration
+import io.sentry.compose.helper.BuildConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -27,6 +28,7 @@ val appModule = module {
     // Firebase Auth
     single<FirebaseAuth> { FirebaseAuth.getInstance() }
 
+    // Resources
     single<ResourceProvider> { ResourceProviderImpl(androidContext()) }
 
     // DataStore
@@ -44,9 +46,11 @@ val appModule = module {
         )
     }
 
-    // Stripe
-    single<Stripe> {
-        Stripe(androidContext(), "pk_test_your_publishable_key_here")
+    // Stripe Configuration
+    single {
+        val publishableKey = BuildConfig.VERSION_NAME
+        PaymentConfiguration.init(androidContext(), publishableKey)
+        PaymentConfiguration.getInstance(androidContext())
     }
 
     // ViewModels
