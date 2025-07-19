@@ -8,10 +8,8 @@ This mobile application combines user authentication and payment card validation
 - **Jetpack Compose** – declarative UI development
 - **MVVM Architecture** – clear separation of concerns
 - **Koin** – dependency injection
-- **Stripe** - payment
 - **Firebase Authentication**
 - **Google Sign-In**
-- **Custom Payment Card Validation**
 - **Password Reset** (via Firebase Hosting)
 - **Sentry** – real-time error monitoring and performance tracking
 
@@ -28,35 +26,23 @@ This project is actively under development. Core authentication and card validat
 - Sentry Integration: The app now features robust error and performance monitoring with Sentry. All crashes, exceptions, and ANRs are automatically captured, helping ensure reliability and fast issue resolution.
 - Navigation Tracking in Jetpack Compose: While Sentry’s navigation tracking is automatic for traditional navigation, in Jetpack Compose we’ve implemented custom breadcrumbs to track user navigation between screens. This provides valuable context for debugging and user flow analysis.
 
-### Features In Progress
-
-- Payment success and failure screens are currently under development and not yet finalized.
-
 ## 📱 Screenshots
 
 ### Sign Up Screen
 
-<img src="app/src/main/java/com/example/authapp/assets/screenshots/signup.png" width="300" alt="Sign Up">
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/createaccount.png" width="300" alt="Sign Up">
 
-<img src="app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png" width="300" alt="Sign Up with Google">
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/googlesignup.png" width="300" alt="Sign Up with Google">
 
 ### Sign In Screen
 
-<img src="app/src/main/java/com/example/authapp/assets/screenshots/signin.png" width="300" alt="Sign In">
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/signin.png.png" width="300" alt="Sign In">
 
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png" width="300" alt="Sign In with Google">
-
-### Forgot Password Screen
-
-<img src="app/src/main/java/com/example/authapp/assets/screenshots/forgotpassword.png" width="300" alt="Forgot Password">
 
 ### Home Screen
 
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/home.png" width="300" alt="Home">
-
-### Card Validation Screen
-
-*Note: Card validation screen provides real-time feedback during input.*
 
 ---
 
@@ -64,8 +50,6 @@ This project is actively under development. Core authentication and card validat
 
 - [✅] Firebase Authentication integration
 - [✅] Complete Forgot Password flow
-- [✅] Custom payment card validation logic
-- [  ] Payment success and failure screens (in progress)
 - [  ] Unit and instrumentation tests
 
 ## 🤝 Contributing
