@@ -36,7 +36,7 @@ This project is actively under development. Core authentication and card validat
 
 ### Sign In Screen
 
-<img src="app/src/main/java/com/example/authapp/assets/screenshots/signin.png.png" width="300" alt="Sign In">
+<img src="app/src/main/java/com/example/authapp/assets/screenshots/signin.png" width="300" alt="Sign In">
 
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png" width="300" alt="Sign In with Google">
 
