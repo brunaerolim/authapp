@@ -37,6 +37,7 @@ sentry = "7.14.0"
 sentry-plugin = "4.11.0"
 tvMaterial = "1.0.0"
 constraintlayoutCore = "1.1.1"
+supportAnnotations = "28.0.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -129,3 +130,4 @@ sentry-android-navigation = { group = "io.sentry", name = "sentry-android-naviga
 sentry-android-replay = { group = "io.sentry", name = "sentry-android-replay", version.ref = "sentry" }
 androidx-tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tvMaterial" }
 androidx-constraintlayout-core = { group = "androidx.constraintlayout", name = "constraintlayout-core", version.ref = "constraintlayoutCore" }
+support-annotations = { group = "com.android.support", name = "support-annotations", version.ref = "supportAnnotations" }

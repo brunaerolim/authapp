@@ -136,6 +136,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.tv.material)
     implementation(libs.androidx.constraintlayout.core)
+    implementation(libs.support.annotations)
     ksp(libs.androidx.room.compiler)
 
     // Coroutines
@@ -155,6 +156,7 @@ dependencies {
 
     // Stripe
     implementation(libs.stripe.android)
+    implementation(libs.stripe.financial.connections)
 
     //Sentry
     implementation(libs.sentry.android)

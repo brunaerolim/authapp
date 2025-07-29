@@ -35,7 +35,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
@@ -51,8 +50,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.example.authapp.R
+import com.example.authapp.presentation.theme.Pink40
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ForgotPasswordScreen(
     state: ForgotPasswordState,
@@ -206,7 +205,7 @@ private fun ForgotPasswordHeader(
             text = stringResource(R.string.forgot_password_title),
             style = MaterialTheme.typography.headlineMedium.copy(
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                color = Pink40
             ),
             textAlign = TextAlign.Center
         )
@@ -216,14 +215,13 @@ private fun ForgotPasswordHeader(
         Text(
             text = stringResource(R.string.forgot_password_subtitle),
             style = MaterialTheme.typography.bodyMedium.copy(
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                color = Pink40
             ),
             textAlign = TextAlign.Center
         )
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun ForgotPasswordForm(
     state: ForgotPasswordState,
@@ -251,7 +249,6 @@ private fun ForgotPasswordForm(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun EmailTextField(
     value: String,
@@ -267,14 +264,14 @@ private fun EmailTextField(
         label = {
             Text(
                 text = stringResource(R.string.email_label),
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                color = Pink40.copy(alpha = 0.7f)
             )
         },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Email,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
+                tint = Pink40
             )
         },
         keyboardOptions = KeyboardOptions(
@@ -296,10 +293,10 @@ private fun EmailTextField(
         isError = isError,
         shape = RoundedCornerShape(12.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            focusedBorderColor = Pink40,
             unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-            focusedLabelColor = MaterialTheme.colorScheme.primary,
-            cursorColor = MaterialTheme.colorScheme.primary,
+            focusedLabelColor = Pink40,
+            cursorColor = Pink40,
             errorBorderColor = MaterialTheme.colorScheme.error,
             errorLabelColor = MaterialTheme.colorScheme.error
         )
@@ -341,9 +338,9 @@ private fun ForgotPasswordButton(
         modifier = modifier.height(56.dp),
         enabled = state.isSendEmailEnabled.value && !state.isLoading.value,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+            containerColor = Pink40,
+            contentColor = Pink40,
+            disabledContainerColor = Pink40.copy(alpha = 0.5f)
         ),
         shape = RoundedCornerShape(12.dp),
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
@@ -351,7 +348,7 @@ private fun ForgotPasswordButton(
         if (state.isLoading.value) {
             CircularProgressIndicator(
                 modifier = Modifier.size(20.dp),
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = Pink40,
                 strokeWidth = 2.dp
             )
         } else {
