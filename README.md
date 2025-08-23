@@ -19,8 +19,7 @@ principles.
 
 ## Project Status
 
-This project is actively under development. Core authentication and card validation features are
-implemented and undergoing testing.
+This project is actively under development. Core authentication are under improvements
 
 ### Completed Features
 
@@ -58,7 +57,6 @@ implemented and undergoing testing.
 - [✅] Firebase Authentication integration
 - [✅] Complete Forgot Password flow
 - [✅] Google Sign-In integration
--
 
 ## Contributing
 
