@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
@@ -50,6 +51,34 @@ class HomeViewModel(
         )
     )
 
+    val isAuthenticated = combine(
+        currentUser,
+        userPreferences
+    ) { user, preferences ->
+        user != null && preferences.isLoggedIn
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        false
+    )
+
+    init {
+        checkAuthenticationStatus()
+    }
+
+    private fun checkAuthenticationStatus() {
+        viewModelScope.launch {
+            combine(currentUser, userPreferences) { user, preferences ->
+                user == null && preferences.isLoggedIn
+            }.collect { shouldSignOut ->
+                if (shouldSignOut) {
+                    userPreferencesDataStore.clearUserData()
+                    _signOutSuccess.emit(Unit)
+                }
+            }
+        }
+    }
+
     fun showSignOutDialog() {
         _showSignOutDialog.value = true
     }
@@ -69,10 +98,13 @@ class HomeViewModel(
                     authRepository.signOut()
                     _signOutSuccess.emit(Unit)
                 } catch (e: Exception) {
+                    // If sign out fails, still clear local user data
+
                     try {
                         userPreferencesDataStore.clearUserData()
-                        _signOutSuccess.emit(Unit)
                     } catch (clearException: Exception) {
+                        // Log the exception if needed
+                    } finally {
                         _signOutSuccess.emit(Unit)
                     }
                 } finally {
@@ -95,9 +127,16 @@ class HomeViewModel(
                         userEmail = currentFirebaseUser.email ?: "",
                         userPhotoUrl = currentFirebaseUser.photoUrl?.toString()
                     )
+                } else {
+                    userPreferencesDataStore.clearUserData()
+                    _signOutSuccess.emit(Unit)
                 }
             } catch (e: Exception) {
-                // Log error but don't crash
+                val user = authRepository.getCurrentUser()
+                if (user == null) {
+                    userPreferencesDataStore.clearUserData()
+                    _signOutSuccess.emit(Unit)
+                }
             } finally {
                 _showLoading.value = false
             }

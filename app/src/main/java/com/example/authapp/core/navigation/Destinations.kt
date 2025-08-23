@@ -6,5 +6,16 @@ object Destinations {
     const val HOME = "home"
     const val FORGOT_PASSWORD = "forgot_password"
     const val PAYMENT = "payment"
-    const val SUCCESS = "success"
+}
+
+sealed class Screen(val route: String) {
+    object SignIn : Screen("sign_in")
+    object SignUp : Screen("sign_up")
+    object Home : Screen("home")
+    object ForgotPassword : Screen("forgot_password")
+    object Payment : Screen("payment")
+
+    object SignInWithEmail : Screen("sign_in/{email}") {
+        fun createRoute(email: String) = "sign_in/$email"
+    }
 }

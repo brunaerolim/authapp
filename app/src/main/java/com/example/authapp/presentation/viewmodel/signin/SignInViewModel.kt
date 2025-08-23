@@ -64,12 +64,25 @@ class SignInViewModel(
 
     init {
         loadUserPreferences()
+        clearPreviousSession()
+    }
+
+    private fun clearPreviousSession() {
+        viewModelScope.launch {
+            try {
+                val currentUser = authRepository.getCurrentUser()
+                if (currentUser == null) {
+                    userPreferencesDataStore.clearUserData()
+                }
+            } catch (e: Exception) {
+            }
+        }
     }
 
     private fun loadUserPreferences() {
         viewModelScope.launch {
             userPreferencesDataStore.userPreferences.collect { prefs ->
-                if (prefs.rememberMe) {
+                if (prefs.rememberMe && !prefs.isLoggedIn) {
                     _email.value = prefs.lastEmail
                     _rememberMe.value = true
                 }
@@ -131,6 +144,7 @@ class SignInViewModel(
                 _errorMessage.value = ""
 
                 try {
+                    userPreferencesDataStore.clearUserData()
                     if (_rememberMe.value) {
                         userPreferencesDataStore.setRememberMe(true, _email.value.trim())
                     } else {
@@ -148,18 +162,21 @@ class SignInViewModel(
                                     userEmail = user.email ?: "",
                                     userPhotoUrl = user.photoUrl?.toString()
                                 )
+                                _signInSuccess.emit(Unit)
+                            } else {
+                                _errorMessage.value = "Failed on login: user data is null"
                             }
-                            _signInSuccess.emit(Unit)
                         }
 
                         is Resource.Failure -> {
-                            _errorMessage.value = result.throwable.message ?: "Sign in failed"
+                            _errorMessage.value = result.throwable.message ?: "Login Failed"
                         }
 
-                        is Resource.Loading -> { /* handled by isLoading */ }
+                        is Resource.Loading -> { /* handled by isLoading */
+                        }
                     }
                 } catch (e: Exception) {
-                    _errorMessage.value = "Sign in failed: ${e.message}"
+                    _errorMessage.value = "Login Error: ${e.message}"
                 } finally {
                     _isLoading.value = false
                 }
@@ -181,9 +198,11 @@ class SignInViewModel(
 
                 try {
                     if (idToken == null) {
-                        _errorMessage.value = "Google sign in was cancelled"
+                        _errorMessage.value = "Login with Google cancelled"
                         return@supervisorScope
                     }
+
+                    userPreferencesDataStore.clearUserData()
 
                     when (val result = authRepository.signInWithGoogleIdToken(idToken)) {
                         is Resource.Success -> {
@@ -199,13 +218,14 @@ class SignInViewModel(
 
                         is Resource.Failure -> {
                             _errorMessage.value =
-                                result.throwable.message ?: "Google sign in failed"
+                                result.throwable.message ?: "Falha no login com Google"
                         }
 
-                        is Resource.Loading -> { /* handled by isLoading */ }
+                        is Resource.Loading -> { /* handled by isLoading */
+                        }
                     }
                 } catch (e: Exception) {
-                    _errorMessage.value = "Google sign in failed: ${e.message}"
+                    _errorMessage.value = "Erro no login com Google: ${e.message}"
                 } finally {
                     _isLoading.value = false
                 }
