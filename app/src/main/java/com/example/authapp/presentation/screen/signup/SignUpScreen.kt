@@ -43,6 +43,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -60,6 +61,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -793,3 +795,44 @@ private fun createTextFieldColors() = OutlinedTextFieldDefaults.colors(
     errorBorderColor = MaterialTheme.colorScheme.error,
     errorLabelColor = MaterialTheme.colorScheme.error
 )
+
+@Preview
+@Composable
+private fun SignUpScreenPreview() {
+    SignUpScreen(
+        state = SignUpFormState(
+        name = remember { mutableStateOf("John Doe") },
+        nameError = remember { mutableStateOf(false) },
+        email = remember { mutableStateOf("") },
+        emailError = remember { mutableStateOf(false) },
+        password = remember { mutableStateOf("") },
+        passwordError = remember { mutableStateOf(false) },
+        confirmPassword = remember { mutableStateOf("") },
+        confirmPasswordError = remember { mutableStateOf(false) },
+        isPasswordVisible = remember { mutableStateOf(false) },
+        isConfirmPasswordVisible = remember { mutableStateOf(false) },
+        acceptTerms = remember { mutableStateOf(false) },
+        isLoading = remember { mutableStateOf(false) },
+        errorToastMessage = remember { mutableStateOf("") },
+        signUpEnabled = remember { mutableStateOf(false) },
+        startGoogleSignUp = kotlinx.coroutines.flow.MutableSharedFlow(),
+        onNameChanged = {},
+        onNameFocusChanged = {},
+        onEmailChanged = {},
+        onEmailFocusChanged = {},
+        onPasswordChanged = {},
+        onPasswordFocusChanged = {},
+        onConfirmPasswordChanged = {},
+        onConfirmPasswordFocusChanged = {},
+        onTogglePasswordVisibility = {},
+        onToggleConfirmPasswordVisibility = {},
+        onAcceptTermsChanged = {},
+        onSignUp = {},
+        onGoogleSignUp = {},
+        onGoogleSignUpResult = {},
+        onGoogleSignUpError = {},
+        onNavigateToSignIn = {},
+        dismissSnackbar = {},
+        onNavigateBack = {}
+    ))
+}
