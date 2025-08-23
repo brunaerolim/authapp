@@ -77,6 +77,7 @@ import com.example.authapp.presentation.theme.PastelSurface
 import com.example.authapp.presentation.theme.Pink40
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
 import java.util.UUID
@@ -131,7 +132,7 @@ fun SignInScreen(
             // App Logo
             AppLogo(
                 modifier = Modifier.constrainAs(logo) {
-                    top.linkTo(parent.top, margin = 32.dp)
+                    top.linkTo(parent.top, margin = 64.dp)
                     centerHorizontallyTo(parent)
                 }
             )
@@ -739,7 +740,7 @@ private fun SignInScreenPreview() {
             isLoading = remember { mutableStateOf(false) },
             errorMessage = remember { mutableStateOf("") },
             isSignInEnabled = remember { mutableStateOf(true) },
-            startGoogleSignIn = kotlinx.coroutines.flow.MutableSharedFlow(),
+            startGoogleSignIn = MutableSharedFlow(),
             onEmailChanged = {},
             onEmailFocusLost = {},
             onPasswordChanged = {},
