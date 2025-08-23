@@ -42,6 +42,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -61,6 +62,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -126,7 +128,6 @@ fun SignInScreen(
                 signInButton, forgotPasswordLink, divider,
                 googleButton, signUpRow, errorCard
             ) = createRefs()
-
             // App Logo
             AppLogo(
                 modifier = Modifier.constrainAs(logo) {
@@ -722,4 +723,35 @@ private fun handleGoogleSignInResult(
             state.onGoogleSignInResult(null)
         }
     }
+}
+
+@Preview
+@Composable
+private fun SignInScreenPreview() {
+    SignInScreen(
+        state = SignInFormState(
+            email = remember { mutableStateOf("email.@example.com") },
+            emailError = remember { mutableStateOf(false) },
+            password = remember { mutableStateOf("password") },
+            passwordError = remember { mutableStateOf(false) },
+            isPasswordVisible = remember { mutableStateOf(false) },
+            rememberMe = remember { mutableStateOf(true) },
+            isLoading = remember { mutableStateOf(false) },
+            errorMessage = remember { mutableStateOf("") },
+            isSignInEnabled = remember { mutableStateOf(true) },
+            startGoogleSignIn = kotlinx.coroutines.flow.MutableSharedFlow(),
+            onEmailChanged = {},
+            onEmailFocusLost = {},
+            onPasswordChanged = {},
+            onPasswordFocusLost = {},
+            onTogglePasswordVisibility = {},
+            onRememberMeChanged = {},
+            onSignIn = {},
+            onGoogleSignIn = {},
+            onGoogleSignInResult = {},
+            onNavigateToForgotPassword = {},
+            onNavigateToSignUp = {},
+            toastMessage = remember { mutableStateOf("") }
+        )
+    )
 }

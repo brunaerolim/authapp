@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -258,4 +259,33 @@ fun HomeContent(
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun HomeContentPreview() {
+    HomeContent(
+        currentUser = User(
+            id = "1",
+            name = "Jane Doe",
+            email = "emailexample@gmail.com",
+            photoUrl = "https://randomuser.me/api/portraits",
+        ),
+        userPreferences = UserPreferences(
+            userId = "1",
+            userName = "Jane Doe",
+            userEmail = "emailexample@gmail.com",
+            userPhotoUrl = "https://randomuser.me/api/portraits",
+            isLoggedIn = true,
+            rememberMe = true,
+            lastEmail = "emailexample@gmail.com"
+        ),
+        isLoading = false,
+        showSignOutDialog = false,
+        onSignOut = {},
+        onShowSignOutDialog = {},
+        onHideSignOutDialog = {},
+        onRefreshUserData = {},
+        onNavigateToCardValidation = {}
+    )
 }
