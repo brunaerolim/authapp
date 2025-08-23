@@ -1,8 +1,12 @@
-# 🔐 Authentication & Payment Card Validation App (Work in Progress)
+# Authentication
 
-This mobile application combines user authentication and payment card validation, built with **Kotlin**, **Jetpack Compose**, **MVVM**, and **Koin** for dependency injection. The goal is to deliver a modern, robust authentication flow using email/password and Google Sign-In, alongside a custom payment card validation feature, all following Google's best practices and clean architecture principles.
+This mobile application combines user authentication and payment card validation, built with *
+*Kotlin**, **Jetpack Compose**, **MVVM**, and **Koin** for dependency injection. The goal is to
+deliver a modern, robust authentication flow using email/password and Google Sign-In, alongside a
+custom payment card validation feature, all following Google's best practices and clean architecture
+principles.
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **Kotlin**
 - **Jetpack Compose** – declarative UI development
@@ -13,9 +17,10 @@ This mobile application combines user authentication and payment card validation
 - **Password Reset** (via Firebase Hosting)
 - **Sentry** – real-time error monitoring and performance tracking
 
-## 🚧 Project Status
+## Project Status
 
-This project is actively under development. Core authentication and card validation features are implemented and undergoing testing.
+This project is actively under development. Core authentication and card validation features are
+implemented and undergoing testing.
 
 ### Completed Features
 
@@ -23,21 +28,23 @@ This project is actively under development. Core authentication and card validat
 - Firebase Authentication and Google Sign-In integration
 - Real-time payment card validation with user feedback
 - Navigation between screens using Jetpack Compose Navigation
-- Sentry Integration: The app now features robust error and performance monitoring with Sentry. All crashes, exceptions, and ANRs are automatically captured, helping ensure reliability and fast issue resolution.
-- Navigation Tracking in Jetpack Compose: While Sentry’s navigation tracking is automatic for traditional navigation, in Jetpack Compose we’ve implemented custom breadcrumbs to track user navigation between screens. This provides valuable context for debugging and user flow analysis.
+- Sentry Integration: The app now features robust error and performance monitoring with Sentry. All
+  crashes, exceptions, and ANRs are automatically captured, helping ensure reliability and fast
+  issue resolution.
+- Navigation Tracking in Jetpack Compose: While Sentry’s navigation tracking is automatic for
+  traditional navigation, in Jetpack Compose we’ve implemented custom breadcrumbs to track user
+  navigation between screens. This provides valuable context for debugging and user flow analysis.
 
-## 📱 Screenshots
+## Screenshots - Evidence
 
 ### Sign Up Screen
 
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/createaccount.png" width="300" alt="Sign Up">
-
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/googlesignup.png" width="300" alt="Sign Up with Google">
 
 ### Sign In Screen
 
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/signin.png" width="300" alt="Sign In">
-
 <img src="app/src/main/java/com/example/authapp/assets/screenshots/signingoogle.png" width="300" alt="Sign In with Google">
 
 ### Home Screen
@@ -46,17 +53,19 @@ This project is actively under development. Core authentication and card validat
 
 ---
 
-## 📋 Roadmap
+## Roadmap
 
 - [✅] Firebase Authentication integration
 - [✅] Complete Forgot Password flow
-- [  ] Unit and instrumentation tests
+- [✅] Google Sign-In integration
+-
 
-## 🤝 Contributing
+## Contributing
 
-Contributions are welcome! Feel free to open issues or submit pull requests for improvements or suggestions.
+Contributions are welcome! Feel free to open issues or submit pull requests for improvements or
+suggestions.
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License**.
 
