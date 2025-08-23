@@ -56,7 +56,8 @@ This project is actively under development. Core authentication are under improv
 
 - [✅] Firebase Authentication integration
 - [✅] Complete Forgot Password flow
-- [✅] Google Sign-In integration
+- [✅] Google Sign-In/Sign-Up integration
+- [✅] Sentry Integration for error monitoring and performance tracking
 
 ## Contributing
 
